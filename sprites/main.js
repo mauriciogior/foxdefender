@@ -10,14 +10,17 @@ window.onload = function(){
     bolas[1] = 'bola_vermelha.jpg';
     bolas[2] = 'bola_amarela.jpg';
 
-    var appleSprite = 'icon0.png';
-    var botaoSprite = 'start-button.jpg';
+    var botaoSprite = new Array(3);
+
+    botaoSprite[0] = 'botao_azul.jpg';
+    botaoSprite[1] = 'botao_vermelho.jpg';
+    botaoSprite[2] = 'botao_amarelo.jpg';
 
     var telaInicial = new Scene();
     var jogo = new Scene();
 
     //Carrega os sprites aqui!
-    core.preload(bolas[0],bolas[1],bolas[2], appleSprite, botaoSprite);
+    core.preload(bolas[0],bolas[1],bolas[2],botaoSprite[0],botaoSprite[1],botaoSprite[2]);
 
     //Quando carregar as imagens, faça isso:
     core.onload = function(){
@@ -81,9 +84,9 @@ window.onload = function(){
             }
 
             for(i=0 ; i<3 ; i++) {
-                botoes[i] = new enchant.Sprite(50,50);
-                botoes[i].image = core.assets[bolas[i]];
-                botoes[i].moveTo(20 + i*100, 430);
+                botoes[i] = new enchant.Sprite(80,78);
+                botoes[i].image = core.assets[botaoSprite[i]];
+                botoes[i].moveTo(5 + i*110, 400);
 
                 jogo.addChild(botoes[i]);
             }
@@ -97,7 +100,7 @@ window.onload = function(){
                     if(atual == 60)
                         atual = 0;
                     for(var i=0 ; i<60 ; i++) {
-                        inimigos[i][0].y += 4;
+                        inimigos[i][0].y += 7;
                     }
                     if(inimigos[atual][0].y > 360) {
                         inimigos[atual][0].y -= 4800;
