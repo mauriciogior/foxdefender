@@ -54,7 +54,7 @@ window.onload = function(){
             botaoVida.x = 10;
             jogo.addChild(botaoVida);
 
-            botaoPause.y = 280;
+            botaoPause.y = 10;
             botaoPause.x = 240;
             jogo.addChild(botaoPause);
 
