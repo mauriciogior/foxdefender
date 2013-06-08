@@ -94,6 +94,8 @@ window.onload = function(){
             jogo.addEventListener('enterframe', function() {
 
                 if(!pause) {
+                    if(atual == 60)
+                        atual = 0;
                     for(var i=0 ; i<60 ; i++) {
                         inimigos[i][0].y += 4;
                     }
@@ -103,7 +105,7 @@ window.onload = function(){
                         atual ++;
                         botaoVida.text = "Vida: "+vida;
                     }
-                    if(atual >= 60)
+                    if(atual == 60)
                         atual = 0;
                 }
 
