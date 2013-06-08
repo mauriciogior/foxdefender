@@ -1,27 +1,10 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
-    <meta charset="utf-8">
-
-    <!-- This is a comment. Everything between the opening and closing > is ignored by the browser.
-    We'll use that to provide you with some help.
-    You can safely delete the comments once you're done with them. -->
-
-    <!-- This is the title of your page. Change it at will. For example: Joe's great space game -->
     <title>Fox Defender</title>
-
-    <!-- Search engines sometimes use this when showing results. Change it to match your page's contents -->
-    <meta name="description" content="My first page is a carefully crafted example of web awesomeness.">
-    <meta name="viewport" content="width=device-width">
-
-    <!-- Place favicon.ico in the root directory -->
-
-    <link rel="stylesheet" href="css/app.css">
+    <script src="js/lib/enchant.js"></script>
+    <script src="js/main.js"></script>
   </head>
   <body>
-    <button id="install-btn">Install</button>
-    <script type="text/javascript" src="js/crafty.js"></script>
-    <script type="text/javascript" src="js/app.js"></script>
-    <script type="text/javascript" src="js/main.js"></script>
   </body>
 </html>
