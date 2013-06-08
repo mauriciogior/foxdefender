@@ -8,7 +8,7 @@
     You can safely delete the comments once you're done with them. -->
 
     <!-- This is the title of your page. Change it at will. For example: Joe's great space game -->
-    <title>Hello world!</title>
+    <title>Fox Defender</title>
 
     <!-- Search engines sometimes use this when showing results. Change it to match your page's contents -->
     <meta name="description" content="My first page is a carefully crafted example of web awesomeness.">
@@ -19,16 +19,9 @@
     <link rel="stylesheet" href="css/app.css">
   </head>
   <body>
-      <h1>Awesome app</h1>
-      <div id="content">
-          <p>Welcome to your awesome web app!</p>
-          <p>This was created from the <a href="https://github.com/mozilla/mortar-app-stub">mortar-app-stub</a>
-          template, one of the <a href="https://github.com/mozilla/mortar">mortar templates</a>.</p>
-
-          <button id="install-btn">Install</button>
-      </div>
-
+    <button id="install-btn">Install</button>
     <script type="text/javascript" src="js/crafty.js"></script>
     <script type="text/javascript" src="js/app.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
   </body>
 </html>
