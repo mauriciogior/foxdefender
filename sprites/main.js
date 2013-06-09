@@ -26,6 +26,18 @@ window.onload = function() {
     var enemyWidth = 50;
     var enemyHeight = 50;
 
+    var soundButtonHeight = 30;
+    var soundButtonWidth = 30;
+
+    var muteButtonWidth = soundButtonWidth;
+    var muteButtonHeight = soundButtonHeight;
+
+    var pauseButtonWidth = 30;
+    var pauseButtonHeight = 30;
+
+    var pausescreenWidth = windowWidth;
+    var pausescreenHeight = windowHeight;
+
     //VARIÁVEIS DAS CENAS
     var splashScene = new Scene();
     var gameScene = new Scene();
@@ -68,10 +80,7 @@ window.onload = function() {
     //IMAGENS AQUI
     var foxSprite = 'fox2.png';
 
-    var enemiesSprite = new Array(3);
-    enemiesSprite[0] = 'bola_azul.jpg';
-    enemiesSprite[1] = 'bola_vermelha.jpg';
-    enemiesSprite[2] = 'bola_amarela.jpg';
+    var enemiesSprite = 'monsters.png';
 
     var colorSprite = new Array(3);
     colorSprite[0] = 'fireball_blue_2.png';
@@ -86,22 +95,24 @@ window.onload = function() {
     var projectileSprite = 'cannonball.png';
     var splashSprite = 'splash_2.png';
 
-    core.preload( enemiesSprite[0], enemiesSprite[1], enemiesSprite[2],
+    var soundButtonSprite = 'soundButton.png';
+    var muteButtonSprite = 'muteButton.png';
+    var pauseButtonSprite = 'pauseButton.png';
+
+    var backgroundSprite = 'background.png';
+
+    var pausescreenSprite = 'pausescreen.png';
+
+    core.preload( enemiesSprite,
                   colorSprite[0], colorSprite[1], colorSprite[2],
                   colorSmallSprite[0], colorSmallSprite[1], colorSmallSprite[2],
-                  foxSprite, projectileSprite, splashSprite);
+                  foxSprite, projectileSprite, splashSprite,soundButtonSprite,backgroundSprite,pauseButtonSprite,muteButtonSprite, pausescreenSprite);
 
     //LABELS
-    var pauseButton = new Label();
     var beginButton = new Label();
     var lifeBar = new Label();
     var gameOverLabel = new Label();
 
-    //LABELS DEFINITION
-    pauseButton.font = "30px sans-serif";
-    pauseButton.text = "||";
-    pauseButton.y = (10/contextHeight) * windowHeight;
-    pauseButton.x = (280/contextWidth) * windowWidth;
 
     beginButton.textAlign = "center";
     beginButton.font = "50px sans-serif";
@@ -164,10 +175,27 @@ window.onload = function() {
                 this.currentTime = 0;
                 this.play();
             }, false);
+            
+            var background = new enchant.Sprite(windowWidth,windowHeight);
+                background.image = core.assets[backgroundSprite];
+                background.x = 0;
+                background.y = 0
+                gameScene.addChild(background);
+                
+            var soundButton = new enchant.Sprite(soundButtonWidth,soundButtonHeight);
+                soundButton.image = core.assets[soundButtonSprite];
+                soundButton.x = windowWidth-soundButtonWidth;
+                soundButton.y = 0
+                gameScene.addChild(soundButton);
+            
+            var muteButton = new enchant.Sprite(muteButtonWidth,muteButtonHeight);
+                muteButton.image = core.assets[muteButtonSprite];
+                muteButton.x = windowWidth-muteButtonWidth;
+                muteButton.y = 0
+            
 
             //ADD CHILD
             gameScene.addChild(lifeBar);
-            gameScene.addChild(pauseButton);
 
             //CRIA LISTA DOS INIMIGOS
             for(var i=0 ; i<monstersSize ; i++) {
@@ -179,7 +207,7 @@ window.onload = function() {
                 color = (parseInt(Math.random()*10))%3;
 
                 //CRIA SPRITE DOS INIMIGOS
-                enemies[i][0] = new enchant.Sprite(50, 50);
+                enemies[i][0] = new enchant.Sprite(enemyWidth, enemyHeight);
 
                 //SETA A COR DO INIMIGO
                 enemies[i][1] = color;
@@ -188,13 +216,24 @@ window.onload = function() {
                 random = Math.random()*(320-90);
 
                 //ADICIONA A IMAGEM DO INIMIGO
-                enemies[i][0].image = core.assets[enemiesSprite[color]];
+                enemies[i][0].image = core.assets[enemiesSprite];
 
                 //MOVE O INIMIGO PARA A POSIÇÃO
                 enemies[i][0].moveTo(20 + random, 10 - i*80);
 
                 //SETA OS FRAMES QUE SERÂO EXIBIDOS
-                enemies[i][0].frame = [6, 6, 7, 7];
+                if ( color == 0 ){  
+                enemies[i][0].frame = [color,color,color,color,color,color,color,color,color,color,
+                                        color+1,color+1,color+1,color+1,color+1,color+1,color+1,color+1,color+1 ];
+                } else if(color == 1 ){
+                enemies[i][0].frame = [ 2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+                                        3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3];
+                } else {
+                enemies[i][0].frame = [ 4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
+                                        5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5 ];
+                }
+
+
 
                 //ADD CHILD
                 gameScene.addChild(enemies[i][0]);
@@ -264,7 +303,21 @@ window.onload = function() {
 
                 //ADD CHILD
                 gameScene.addChild(button[i]);
+                
+
             }
+
+            //SOMENTE o PAUSE BUTTON A FRENTE DO PAUSE SCREEN
+            var pausescreen = new enchant.Sprite(pausescreenWidth,pausescreenHeight);
+                pausescreen.image = core.assets[pausescreenSprite];
+                pausescreen.x = 0;
+                pausescreen.y = 0
+
+            var pauseButton = new enchant.Sprite(pauseButtonWidth,pauseButtonHeight);
+                pauseButton.image = core.assets[pauseButtonSprite];
+                pauseButton.x = windowWidth-pauseButtonWidth-soundButtonWidth;
+                pauseButton.y = 0
+            gameScene.addChild(pauseButton);
 
             //FUNÇÃO GAMEOVER
             function gameOver() {
@@ -385,7 +438,7 @@ window.onload = function() {
 
                             //PRÓXIMO INIMIGO
                             currentEnemy ++;
-
+                            if(currentEnemy >= monstersSize) currentEnemy = 0;
                             //NOVA IMAGEM DO PROJÉTIL
                             projectile.image = core.assets[colorSmallSprite[enemies[currentEnemy][1]]];
 
@@ -410,12 +463,16 @@ window.onload = function() {
 
                             //PRÓXIMO INIMIGO
                             currentEnemy ++;
+                            if(currentEnemy >= monstersSize)currentEnemy = 0;
 
                             //PERDE VIDA
                             life -= 5;
 
                             //ATUALIZA A BARRA DE VIDA
                             lifeBar.text = "LIFE: "+life;
+                            console.log("ae");  
+                            console.log(currentEnemy);  
+                            projectile.image = core.assets[colorSmallSprite[enemies[currentEnemy][1]]];
                         }
 
                         //SE PASSAR DO monstersSize, VOLTA NO 0
@@ -446,7 +503,7 @@ window.onload = function() {
 
                         //PROJÉTIL ENTRA EM MOVIMENTO
                         projectileState = 1;
-                            projectileTarget = currentEnemy;
+                        projectileTarget = currentEnemy;
 
                     }
                 }
@@ -462,12 +519,29 @@ window.onload = function() {
                 if(pause == true) {
                     pause = false;
                     gameMusic.play();
+                    gameScene.removeChild(pausescreen);
                 }
                 else {
                     pause = true;
                     gameMusic.pause();
+                    gameScene.addChild(pausescreen);
+                    gameScene.removeChild(pauseButton);
+                    gameScene.addChild(pauseButton);
                 }
             })
+            soundButton.addEventListener('touchstart', function() {
+                //TODO fix STOP MUSIC!
+                gameMusic.pause();
+                gameScene.addChild(muteButton);
+                gameScene.removeChild(soundButton);
+            })
+            muteButton.addEventListener('touchstart', function() {
+                //TODO fix PLAY MUSIC!
+                gameMusic.play();
+                gameScene.removeChild(muteButton);
+                gameScene.addChild(soundButton);
+            })
+
 
 
         });
