@@ -284,7 +284,7 @@ window.onload = function() {
                         //SE PASSAR DO 60, VOLTA NO 0
                         if(currentEnemie == 60)
                             currentEnemie = 0;
-                       
+
                     }
                     //ATUALIZA O TEMPO
                     lastTime = currentTime;
