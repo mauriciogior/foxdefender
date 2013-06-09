@@ -52,6 +52,9 @@ window.onload = function() {
     var gameOverLabelWidth = 160;
     var gameOverLabelHeight = 98;
 
+    var gameOverBackgroundWidth = windowWidth;
+    var gameOverBackgroundHeight = windowHeight;
+
     //VARIÁVEIS DAS CENAS
     var splashScene = new Scene();
     var gameScene = new Scene();
@@ -116,7 +119,7 @@ window.onload = function() {
 
     var backgroundSprite = 'background.png';
     var startButtonSprite = 'start.png';
-    var gameOverLabelSprite = 'gameover.png';
+    var gameOverSprite = 'gameover.png';
 
     var pausescreenSprite = 'pausescreen.png';
     var lifePointSprite = 'lifepoint.png';
@@ -135,27 +138,16 @@ window.onload = function() {
             muteButtonSprite,
             pausescreenSprite,
             startButtonSprite,
-            gameOverLabelSprite
+            gameOverSprite
     );
 
 
-    //LABELS
-//    var lifeBar = new Label();
-    var gameOverLabel = new Label();
-
+    var gameOverLabelSprite = new enchant.Sprite(gameOverLabelWidth, gameOverLabelHeight);
+    var gameOverBackground = new enchant.Sprite(gameOverBackgroundWidth, gameOverBackgroundHeight);
 
     var mainMenu = new enchant.Sprite(mainMenuWidth,mainMenuHeight);
     var startButton = new enchant.Sprite(startButtonWidth,startButtonHeight);
 
-    gameOverLabel.textAlign = "center";
-    gameOverLabel.y = (150/contextHeight) * windowHeight;
-    gameOverLabel.x = (15/contextWidth) * windowWidth;
-    gameOverLabel.text = "GAME<br>OVER";
-
-
-   // lifeBar.text = "LIFE: "+life;
-    //lifeBar.y = (10/contextHeight) * windowHeight;
-    //lifeBar.x = (10/contextWidth) * windowWidth;
 
     //COMEÇA O JOGO
     core.onload = function(){
@@ -171,6 +163,7 @@ window.onload = function() {
         splash.y = 0;
         splash.x = 0;
 
+
         //ADD CHILD
         splashScene.addChild(splash);
 
@@ -181,7 +174,6 @@ window.onload = function() {
 
             //TERMINA SPLASH
             core.popScene(splashScene);
-
 
             mainMenu.image = core.assets[backgroundSprite];
             mainMenu.y = 0;
@@ -231,9 +223,6 @@ window.onload = function() {
                 muteButton.x = windowWidth-muteButtonWidth;
                 muteButton.y = 0
 
-
-            //ADD CHILD
-//            gameScene.addChild(lifeBar);
 
             for(var i =0; i < 10; i++){
                     lifeBar[i] = new enchant.Sprite(lifePointWidth,lifePointHeight);
@@ -373,7 +362,16 @@ window.onload = function() {
 
                 core.popScene(gameScene);
 
-                gameOverScene.addChild(gameOverLabel);
+                gameOverLabelSprite.image = core.assets[gameOverSprite];
+                gameOverLabelSprite.x = (windowWidth - gameOverLabelWidth)/2;
+                gameOverLabelSprite.y = (windowHeight - gameOverLabelHeight)/2;
+
+                gameOverBackground.image = core.assets[backgroundSprite];
+                gameOverBackground.y = 0;
+                gameOverBackground.x = 0;
+
+                gameOverScene.addChild(gameOverBackground);
+                gameOverScene.addChild(gameOverLabelSprite);
 
                 core.pushScene(gameOverScene);
 
@@ -518,10 +516,6 @@ window.onload = function() {
                             life -= 5;
 
 
-                            //ATUALIZA A BARRA DE VIDA
-                            lifeBar.text = "LIFE: "+life;
-                            console.log("ae");
-                            console.log(currentEnemy);
                             projectile.image = core.assets[colorSmallSprite[enemies[currentEnemy][1]]];
                         }
 
