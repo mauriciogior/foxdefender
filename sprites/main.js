@@ -7,7 +7,7 @@ window.onload = function() {
     var windowHeight = 480;
     var lastAim = 0;
     var core = new Game(windowWidth, windowHeight);
-
+    var dir = 0;
     //Sprites aqui!
     var foxSprite = "cannon.png"
 
@@ -21,10 +21,10 @@ window.onload = function() {
     botaoSprite[1] = 'botao_vermelho.jpg';
     botaoSprite[2] = 'botao_amarelo.jpg';
 
-    var projetil;
+    var projetilSprite = 'cannonball.png';
 
     //Carrega os sprites aqui!
-    core.preload(bolas[0],bolas[1],bolas[2],botaoSprite[0],botaoSprite[1],botaoSprite[2],foxSprite);
+    core.preload(bolas[0],bolas[1],bolas[2],botaoSprite[0],botaoSprite[1],botaoSprite[2],foxSprite,projetilSprite);
 
 
     /*****************
@@ -121,6 +121,10 @@ window.onload = function() {
 
             var atual = 0;
 
+            var projetil = new enchant.Sprite(20,20);
+            projetil.image = core.assets[projetilSprite];
+            projetil.rotate(-90);
+            jogo.addChild(projetil);
             var fox = new enchant.Sprite(80,80);
             fox.image = core.assets[foxSprite];
             fox.moveTo(windowWidth/2-80/2,windowHeight-120);
@@ -138,6 +142,9 @@ window.onload = function() {
             var tempoAnterior = 0;
             var steps = 0;
 
+            var estadoProjetil = 0; //0: standby -  1: movimento
+            var posProjetil = 55;
+
             jogo.addEventListener('enterframe', function() {
 
                 if(!pause) {
@@ -148,21 +155,39 @@ window.onload = function() {
                     if(tempoAnterior != 0) {
                        if(atual == 60)
                             atual = 0;
+                        
                         dx = (inimigos[atual][0].x+25)-(windowWidth/2);
                         dy = (inimigos[atual][0].y+25)-(windowHeight-120);
                         hip = Math.sqrt((dx*dx)+(dy*dy));
                         aim = Math.acos((((inimigos[atual][0].x+25)-windowWidth/2))/hip);
                         fox.rotate((lastAim-aim)*57);
+
+                        dir = 180-((aim)*57); 
+                        projetil.moveTo(windowWidth/2-((Math.cos((dir/57)))*55)-10, (windowHeight-110)-(Math.sin((dir/180)*3.14)*55)+25);
+                        
+                        if(estadoProjetil == 1) {
+                            posProjetil+=5;
+                            projetil.moveTo(windowWidth/2-((Math.cos((dir/57)))*posProjetil)-10, (windowHeight-110)-(Math.sin((dir/180)*3.14)*posProjetil)+25);
+                        }
+
+                        if(inimigos[atual][0].intersect(projetil)){
+                            estadoProjetil = 0; 
+                            inimigos[atual][0].y -= 4800;
+                            atual ++;
+                            posProjetil = 55;
+                        }
+
                         lastAim = aim;
                         for(var i=0 ; i<60 ; i++) {
                             inimigos[i][0].y += steps;
                         }
-                        if(inimigos[atual][0].y > 360) {
+                        if(inimigos[atual][0].y > 325) {
                             inimigos[atual][0].y -= 4800;
                             vida -= 5;
                             atual ++;
                             botaoVida.text = "Vida: "+vida;
                         }
+
                         if(atual == 60)
                             atual = 0;
                        
@@ -176,8 +201,7 @@ window.onload = function() {
                 if(!pause) {
                     cor = inimigos[atual][1];
                         if(e.x >= botoes[cor].x && e.x <= botoes[cor].x+80 && e.y >= botoes[cor].y && e.y <= botoes[cor].y+80){
-                            inimigos[atual][0].y -= 4800;
-                            atual ++;
+                            estadoProjetil = 1;
                            // tempo = core.fps;
                         }
                 }
