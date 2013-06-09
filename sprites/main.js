@@ -30,13 +30,14 @@ window.onload = function() {
 
     var soundButtonHeight = 30;
     var soundButtonWidth = 30;
+    var soundButtonRightMargin = 10;
 
     var muteButtonWidth = soundButtonWidth;
     var muteButtonHeight = soundButtonHeight;
 
     var pauseButtonWidth = 30;
     var pauseButtonHeight = 30;
-    var pauseButtonRightMargin = 10;
+    var pauseButtonRightMargin = 15;
 
     var pausescreenWidth = windowWidth;
     var pausescreenHeight = windowHeight;
@@ -213,16 +214,16 @@ window.onload = function() {
                 background.y = 0
                 gameScene.addChild(background);
 
-            var soundButton = new enchant.Sprite(soundButtonWidth,soundButtonHeight);
+            var soundButton = new enchant.Sprite(soundButtonWidth, soundButtonHeight);
                 soundButton.image = core.assets[soundButtonSprite];
-                soundButton.x = windowWidth-soundButtonWidth;
+                soundButton.x = windowWidth - soundButtonWidth - soundButtonRightMargin;
                 soundButton.y = 0
                 gameScene.addChild(soundButton);
 
-            var muteButton = new enchant.Sprite(muteButtonWidth,muteButtonHeight);
+            var muteButton = new enchant.Sprite(muteButtonWidth, muteButtonHeight);
                 muteButton.image = core.assets[muteButtonSprite];
-                muteButton.x = windowWidth-muteButtonWidth;
-                muteButton.y = 0
+                muteButton.x = soundButton.x;
+                muteButton.y = soundButton.y;
 
 
             for(var i =0; i < 10; i++){
@@ -352,7 +353,7 @@ window.onload = function() {
 
             var pauseButton = new enchant.Sprite(pauseButtonWidth,pauseButtonHeight);
                 pauseButton.image = core.assets[pauseButtonSprite];
-                pauseButton.x = windowWidth-pauseButtonWidth-soundButtonWidth - pauseButtonRightMargin;
+                pauseButton.x = windowWidth - pauseButtonWidth - soundButtonWidth - soundButtonRightMargin - pauseButtonRightMargin;
                 pauseButton.y = 0
             gameScene.addChild(pauseButton);
 
