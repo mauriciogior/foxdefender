@@ -3,9 +3,9 @@ enchant();
 window.onload = function() {
 
     //VARIÁVEIS DO CANVAS
-    var contextWidth = 320; //Fixo: base para calculo de responsive design
+    var contextWidth = 334; //Fixo: base para calculo de responsive design
     var contextHeight = 480; //Fixo: base para calculo de responsive design
-    var windowWidth = 320; //TODO: pegar do device
+    var windowWidth = 334; //TODO: pegar do device
     var windowHeight = 480; //TODO: pegar do device
     var monstersSize = 60;
     var core = new Game(windowWidth, windowHeight);
@@ -84,7 +84,7 @@ window.onload = function() {
     colorSmallSprite[2] = 'fireball_yellow_small.png';
 
     var projectileSprite = 'cannonball.png';
-    var splashSprite = 'splash.png';
+    var splashSprite = 'splash_2.png';
 
     core.preload( enemiesSprite[0], enemiesSprite[1], enemiesSprite[2],
                   colorSprite[0], colorSprite[1], colorSprite[2],
@@ -128,7 +128,7 @@ window.onload = function() {
         var togo = false;
 
         //CRIA SPRITE DO SPLASH
-        splash = new enchant.Sprite(320,480);
+        splash = new enchant.Sprite(341,480);
         splash.image = core.assets[splashSprite];
         splash.y = 0;
         splash.x = 0;
