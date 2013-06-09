@@ -155,7 +155,7 @@ window.onload = function() {
                         fox.rotate((lastAim-aim)*57);
                         lastAim = aim;
                         for(var i=0 ; i<60 ; i++) {
-                            inimigos[i][0].y += steps;
+                            inimigos[i][0].y += steps*2;
                         }
                         if(inimigos[atual][0].y > 360) {
                             inimigos[atual][0].y -= 4800;
