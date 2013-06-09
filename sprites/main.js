@@ -10,23 +10,18 @@ window.onload = function() {
 
     //Sprites aqui!
     var foxSprite = "cannon.png"
-    var bolas = new Array(3);
 
+    var bolas = new Array(3);
     bolas[0] = 'bola_azul.jpg';
     bolas[1] = 'bola_vermelha.jpg';
     bolas[2] = 'bola_amarela.jpg';
 
     var botaoSprite = new Array(3);
-
     botaoSprite[0] = 'botao_azul.jpg';
     botaoSprite[1] = 'botao_vermelho.jpg';
     botaoSprite[2] = 'botao_amarelo.jpg';
 
-    var telaInicial = new Scene();
-    var jogo = new Scene();
-
     var projetil;
-//    var iniProj,endProj;
 
     //Carrega os sprites aqui!
     core.preload(bolas[0],bolas[1],bolas[2],botaoSprite[0],botaoSprite[1],botaoSprite[2],foxSprite);
@@ -43,6 +38,7 @@ window.onload = function() {
     pauseControlScene.addChild(pauseButton);
 
 
+    // Cena da tela inicial
     var telaInicial = new Scene();
 
     var botaoIniciar = new Label();
