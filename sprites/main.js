@@ -1,34 +1,57 @@
 enchant();
 
-window.onload = function(){
+window.onload = function() {
+    var contextWidth = 320;
+    var contextHeight = 480;
     var windowWidth = 320;
     var windowHeight = 480;
     var lastAim = 0;
     var core = new Game(windowWidth, windowHeight);
 
+    //Sprites aqui!
     var foxSprite = "cannon.png"
 
-    //Sprites aqui!
     var bolas = new Array(3);
-
     bolas[0] = 'bola_azul.jpg';
     bolas[1] = 'bola_vermelha.jpg';
     bolas[2] = 'bola_amarela.jpg';
 
     var botaoSprite = new Array(3);
-
     botaoSprite[0] = 'botao_azul.jpg';
     botaoSprite[1] = 'botao_vermelho.jpg';
     botaoSprite[2] = 'botao_amarelo.jpg';
 
-    var telaInicial = new Scene();
-    var jogo = new Scene();
-
     var projetil;
-//    var iniProj,endProj;
 
     //Carrega os sprites aqui!
     core.preload(bolas[0],bolas[1],bolas[2],botaoSprite[0],botaoSprite[1],botaoSprite[2],foxSprite);
+
+
+    /*****************
+     * Cenas básicas *
+     *****************/
+    // Cena do controle de pausa
+    var pauseControlScene = new Scene();
+    var pauseButton = new Label();
+    pauseButton.font = "30px sans-serif";
+    pauseButton.text = "‖";
+    pauseControlScene.addChild(pauseButton);
+
+
+    // Cena da tela inicial
+    var telaInicial = new Scene();
+
+    var botaoIniciar = new Label();
+    botaoIniciar.textAlign = "center";
+    botaoIniciar.font = "50px sans-serif";
+    botaoIniciar.text = "START<br>GAME";
+
+    botaoIniciar.y = (150/contextHeight) * windowHeight;
+    botaoIniciar.x = (15/contextWidth) * windowWidth;
+    telaInicial.addChild(botaoIniciar);
+
+    // Cena principal
+    var jogo = new Scene();
 
     //Quando carregar as imagens, faça isso:
     core.onload = function(){
@@ -39,13 +62,9 @@ window.onload = function(){
         var pause = false;
         // an example of adding a Node object
 
-        var botaoIniciar = new Label("START<br>GAME");
-        botaoIniciar.textAlign = "center";
-
-        botaoIniciar.y = 100;
-        botaoIniciar.x = 50;
-        telaInicial.addChild(botaoIniciar);
         core.pushScene(telaInicial);
+
+
  /*
         core.addEventListener('enterframe', function() {
 
@@ -58,7 +77,7 @@ window.onload = function(){
 
             var botaoVida = new Label("Vida: "+vida);
             var botaoPause = new Label("Pause");
-            
+
 
             botaoVida.y = 10;
             botaoVida.x = 10;
@@ -156,15 +175,11 @@ window.onload = function(){
             var triangulo = function(e) {
                 if(!pause) {
                     cor = inimigos[atual][1];
-               
-                    
                         if(e.x >= botoes[cor].x && e.x <= botoes[cor].x+80 && e.y >= botoes[cor].y && e.y <= botoes[cor].y+80){
                             inimigos[atual][0].y -= 4800;
                             atual ++;
                            // tempo = core.fps;
                         }
-                    
-
                 }
             }
 
@@ -204,3 +219,4 @@ window.onload = function(){
     };
     core.start();
 };
+
