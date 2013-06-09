@@ -20,8 +20,8 @@ window.onload = function() {
     var projectileWidth = 20;
     var projectileHeight = 20;
 
-    var foxWidth = 60;
-    var foxHeight = 80;
+    var foxWidth = 50;
+    var foxHeight = 103;
 
     var enemyWidth = 50;
     var enemyHeight = 50;
@@ -66,7 +66,7 @@ window.onload = function() {
     var currentEnemy = 0;
 
     //IMAGENS AQUI
-    var foxSprite = 'cannon.png';
+    var foxSprite = 'fox2.png';
 
     var enemiesSprite = new Array(3);
     enemiesSprite[0] = 'bola_azul.jpg';
@@ -79,10 +79,11 @@ window.onload = function() {
     colorSprite[2] = 'fireball_yellow.png';
 
     var projectileSprite = 'cannonball.png';
+    var splashSprite = 'splash.png';
 
     core.preload( enemiesSprite[0], enemiesSprite[1], enemiesSprite[2],
                   colorSprite[0], colorSprite[1], colorSprite[2],
-                  foxSprite, projectileSprite);
+                  foxSprite, projectileSprite, splashSprite);
 
     //LABELS
     var pauseButton = new Label();
@@ -121,10 +122,10 @@ window.onload = function() {
         var togo = false;
 
         //CRIA SPRITE DO SPLASH
-        splash = new enchant.Sprite(80,80);
-        splash.image = core.assets[foxSprite];
-        splash.y = 200;
-        splash.x = 140;
+        splash = new enchant.Sprite(320,480);
+        splash.image = core.assets[splashSprite];
+        splash.y = 0;
+        splash.x = 0;
 
         //ADD CHILD
         splashScene.addChild(splash);
@@ -214,6 +215,14 @@ window.onload = function() {
 
             //SETA A IMAGEM DA RAPOSA
             fox.image = core.assets[foxSprite];
+            fox.frame = [0, 0,0, 0,0, 0, 0, 0,0, 0,0, 0, 
+                         1, 1,1, 1,1, 1, 1, 1,1, 1,1, 1, 
+                         0, 0,0, 0,0, 0, 0, 0,0, 0,0, 0, 
+                         1, 1,1, 1,1, 1, 1, 1,1, 1,1, 1, 
+                         3, 3,3, 3,3, 3, 3, 3,3, 3,3, 3,
+                         4, 4,4, 4,4, 4, 4, 4,4, 4,4, 4,
+                         3, 3,3, 3,3, 3, 3, 3,3, 3,3, 3,
+                         4, 4,4, 4,4, 4, 4, 4,4, 4,4, 4];
 
             //MOVE A RAPOSA
             fox.moveTo(windowWidth/2-foxWidth/2,windowHeight-foxHeight/2-80);
