@@ -55,6 +55,9 @@ window.onload = function() {
     var gameOverBackgroundWidth = windowWidth;
     var gameOverBackgroundHeight = windowHeight;
 
+    var deathGradientWidth = windowWidth;
+    var deathGradientHeight = windowHeight;
+
     //VARIÁVEIS DAS CENAS
     var splashScene = new Scene();
     var gameScene = new Scene();
@@ -123,6 +126,8 @@ window.onload = function() {
 
     var pausescreenSprite = 'pausescreen.png';
     var lifePointSprite = 'lifebar.png';
+
+    var deathGradientSprite = 'deathgradient.png';
 
     core.preload(
             enemiesSprite,
