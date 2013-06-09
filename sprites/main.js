@@ -143,7 +143,8 @@ window.onload = function() {
             muteButtonSprite,
             pausescreenSprite,
             startButtonSprite,
-            gameOverSprite
+            gameOverSprite,
+            deathGradientSprite
     );
 
 
@@ -152,7 +153,6 @@ window.onload = function() {
 
     var mainMenu = new enchant.Sprite(mainMenuWidth,mainMenuHeight);
     var startButton = new enchant.Sprite(startButtonWidth,startButtonHeight);
-
 
     //COMEÇA O JOGO
     core.onload = function(){
@@ -295,6 +295,11 @@ window.onload = function() {
 
             //CRIA RAPOSA
             var fox = new enchant.Sprite(foxWidth,foxHeight);
+            
+            var deathGradient = new enchant.Sprite(deathGradientWidth,deathGradientHeight);
+            deathGradient.image = core.assets[deathGradientSprite];
+            deathGradient.x = 0;
+            deathGradient.y = 0;
 
             //SETA A IMAGEM DA RAPOSA
             fox.image = core.assets[foxSprite];
