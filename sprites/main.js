@@ -7,7 +7,11 @@ window.onload = function() {
     var contextHeight = 480;
     var windowWidth = 320;
     var windowHeight = 480;
+    var monstersHeight = 60;
     var core = new Game(windowWidth, windowHeight);
+
+    var buttonHeight = 60;
+    var buttonWidth = 60;
 
     //VARIÁVEIS DAS CENAS
     var pauseControlScene = new Scene();
@@ -27,7 +31,7 @@ window.onload = function() {
     var color = 0;
 
     //VARIÁVEIS DOS SPRITES
-    var enemie = new Array(60);
+    var enemie = new Array(monstersHeight);
     var button = new Array(3);
     var dx,dy;
     var random;
@@ -112,7 +116,7 @@ window.onload = function() {
             gameScene.addChild(pauseButton);
 
             //CRIA LISTA DOS INIMIGOS
-            for(var i=0 ; i<60 ; i++) {
+            for(var i=0 ; i<monstersHeight ; i++) {
 
                 //ARRAY DE INIMIGOS
                 enemie[i] = new Array(2);
@@ -177,13 +181,18 @@ window.onload = function() {
             for(i=0 ; i<3 ; i++) {
 
                 //CRIA O BOTÂO
-                button[i] = new enchant.Sprite(80,78);
+                button[i] = new enchant.Sprite(buttonHeight,buttonWidth);
 
                 //SETA A IMAGEM DO BOTÃO
                 button[i].image = core.assets[colorSprite[i]];
-
-                //MOVE O BOTÂO
-                button[i].moveTo(5 + i*110, windowHeight-80);
+                    //MOVE O BOTÂO
+                if( i ==0) {
+                    button[i].moveTo((windowWidth/2)-(buttonWidth/2)- 60, windowHeight - (buttonHeight/2)-10);
+                } else if (i == 1) {
+                    button[i].moveTo((windowWidth/2)-(buttonWidth/2)+ 60, windowHeight - (buttonHeight/2)-10);
+                } else {
+                    button[i].moveTo((windowWidth/2)-(buttonWidth/2), windowHeight - (buttonHeight/2)-50);
+                }
 
                 //ADD CHILD
                 gameScene.addChild(button[i]);
@@ -204,8 +213,8 @@ window.onload = function() {
                     //SE NÃO FOR A PRIMEIRA VEZ DO LOOP
                     if(lastTime != 0) {
 
-                        //SE PASSAR DO 60, VOLTA NO 0
-                        if(currentEnemie >= 60)
+                        //SE PASSAR DO monstersHeight, VOLTA NO 0
+                        if(currentEnemie >= monstersHeight)
                             currentEnemie = 0;
 
                         //POSIÇÃO DO INIMIGO (CENTRO)
@@ -253,15 +262,15 @@ window.onload = function() {
                             projectilePos = 55;
                         }
 
-                        //SE PASSAR DO 60, VOLTA NO 0
-                        if(currentEnemie >= 60)
+                        //SE PASSAR DO monstersHeight, VOLTA NO 0
+                        if(currentEnemie >= monstersHeight)
                             currentEnemie = 0;
 
                         //A MIRA ANTIGA RECEBE A ATUAL
                         lastAim = aim;
 
                         //INIMIGOS MOVEM
-                        for(var i=0 ; i<60 ; i++) {
+                        for(var i=0 ; i<monstersHeight ; i++) {
                             enemie[i][0].y += steps*2;
                         }
 
@@ -281,8 +290,8 @@ window.onload = function() {
                             lifeBar.text = "LIFE: "+life;
                         }
 
-                        //SE PASSAR DO 60, VOLTA NO 0
-                        if(currentEnemie == 60)
+                        //SE PASSAR DO monstersHeight, VOLTA NO 0
+                        if(currentEnemie == monstersHeight)
                             currentEnemie = 0;
 
                     }
