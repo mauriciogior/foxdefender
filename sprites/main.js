@@ -539,9 +539,11 @@ var deathCycle = 0;
                             //ATUALIZA SCORE BAR
                             scoreBar.text = "SCORE: "+score;
 
-                            if(life > 0)
-                                window.navigator.vibrate(50);
-
+                            if(life > 0) {
+                                if(typeof window.navigator.vibrate == 'function') {
+                                    window.navigator.vibrate(50); 
+                                }
+                            }
                             //INIMIGO MORRE E VOLTA PARA CIMA
                             enemies[currentEnemy][0].y -= 4800;
 
@@ -581,8 +583,11 @@ var deathCycle = 0;
 
                             gameScene.addChild(deathGradient);
                             deathCycle = 10
-                            if(life > 0)
-                                window.navigator.vibrate(200);
+                            if(life > 0) {
+                                if(typeof window.navigator.vibrate == 'function') {
+                                    window.navigator.vibrate(200); 
+                                }
+                            }
 
                             projectile.image = core.assets[colorSmallSprite[enemies[currentEnemy][1]]];
                         }
@@ -629,13 +634,15 @@ var deathCycle = 0;
                         if(enemies[currentEnemy][1] == 0 && enemies[currentEnemy][0].y >= 0 ){
                             projectileState = 1;
                             projectileTarget = currentEnemy;
+                            score += 25;
                         }
                 } );
 
                 button[1].addEventListener('touchstart', function(e){
                         if(enemies[currentEnemy][1] == 1 && enemies[currentEnemy][0].y >= 0 ){
                             projectileState = 1;
-                            projectileTarget = currentEnemy;
+                            projectileTarget = currentEnemy;                        
+                            score += 25;
                         }
                 } );
 
@@ -643,6 +650,7 @@ var deathCycle = 0;
                         if(enemies[currentEnemy][1] == 2 && enemies[currentEnemy][0].y >= 0 ){
                             projectileState = 1;
                             projectileTarget = currentEnemy;
+                            score += 25;
                         }
                 } );
 
