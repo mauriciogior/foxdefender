@@ -31,6 +31,9 @@ window.setTimeout(function() {
     var enemyWidth = 50;
     var enemyHeight = 50;
 
+    var aimWidth = 50;
+    var aimHeight = 50;
+
 var deathCycle = 0;
 
     var soundButtonHeight = 30;
@@ -141,6 +144,8 @@ var deathCycle = 0;
 
     var deathGradientSprite = 'death-gradient.png';
 
+    var aimSprite = 'alvo-01.png';
+
     core.preload(
             enemiesSprite,
             lifePointSprite,
@@ -156,7 +161,8 @@ var deathCycle = 0;
             pausescreenSprite,
             startButtonSprite,
             gameOverSprite,
-            deathGradientSprite
+            deathGradientSprite,
+            aimSprite
     );
 
 
@@ -165,6 +171,7 @@ var deathCycle = 0;
 
     var mainMenu = new enchant.Sprite(mainMenuWidth,mainMenuHeight);
     var startButton = new enchant.Sprite(startButtonWidth,startButtonHeight);
+    var aimImage = new enchant.Sprite(aimWidth,aimHeight);
 
     var scoreBar = new Label();
 
@@ -494,6 +501,10 @@ var deathCycle = 0;
                         //CALCULA O ÂNGULO DE INCLINAÇÃO DO PROJÉTIL
                         projectileDir = 180-((aim)*57);
 
+                        aimImage.image = core.assets[aimSprite];
+                        aimImage.x = enemies[currentEnemy][0].x+enemyWidth/2-aimWidth/2;
+                        aimImage.y = enemies[currentEnemy][0].y+enemyHeight/2-aimHeight/2;
+                        gameScene.addChild(aimImage);
                         if(projectileState == 0 ) {
                             //AJUSTA A POSIÇÃO DO PROJÉTIL
                             projectile.moveTo(   windowWidth/2     - ((Math.cos((projectileDir/57)))*35)-(projectileWidth/2), (windowHeight-80)-(Math.sin((projectileDir/180)*3.14)*35) - (projectileHeight/2));
@@ -539,8 +550,8 @@ var deathCycle = 0;
                             //ATUALIZA SCORE BAR
                             scoreBar.text = "SCORE: "+score;
 
-                            if(life > 0)
-                                window.navigator.vibrate(50);
+//                            if(life > 0)
+//                                window.navigator.vibrate(50);
 
                             //INIMIGO MORRE E VOLTA PARA CIMA
                             enemies[currentEnemy][0].y -= 4800;
@@ -581,8 +592,8 @@ var deathCycle = 0;
 
                             gameScene.addChild(deathGradient);
                             deathCycle = 10
-                            if(life > 0)
-                                window.navigator.vibrate(200);
+  //                          if(life > 0)
+//                                window.navigator.vibrate(200);
 
                             projectile.image = core.assets[colorSmallSprite[enemies[currentEnemy][1]]];
                         }
@@ -629,6 +640,7 @@ var deathCycle = 0;
                         if(enemies[currentEnemy][1] == 0 && enemies[currentEnemy][0].y >= 0 ){
                             projectileState = 1;
                             projectileTarget = currentEnemy;
+                        score += 5;
                         }
                 } );
 
@@ -636,6 +648,7 @@ var deathCycle = 0;
                         if(enemies[currentEnemy][1] == 1 && enemies[currentEnemy][0].y >= 0 ){
                             projectileState = 1;
                             projectileTarget = currentEnemy;
+                        score += 5;
                         }
                 } );
 
@@ -643,6 +656,7 @@ var deathCycle = 0;
                         if(enemies[currentEnemy][1] == 2 && enemies[currentEnemy][0].y >= 0 ){
                             projectileState = 1;
                             projectileTarget = currentEnemy;
+                        score += 5;
                         }
                 } );
 
