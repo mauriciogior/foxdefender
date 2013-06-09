@@ -44,6 +44,9 @@ window.onload = function() {
     var startButtonWidth = 256;
     var startButtonHeight = 136;
 
+    var lifePointWidth = 20;
+    var lifePointHeight = 14;
+
     //VARIÁVEIS DAS CENAS
     var splashScene = new Scene();
     var gameScene = new Scene();
@@ -56,6 +59,7 @@ window.onload = function() {
     var lastAim = 0;
 
     //LIFE
+    var lifeBar = new Array(10);
     var life = 100;
 
     //INIMIGO A SER ACERTADO
@@ -109,15 +113,16 @@ window.onload = function() {
     var startButtonSprite = 'start.png';
 
     var pausescreenSprite = 'pausescreen.png';
+    var lifePointSprite = 'lifepoint.png';
 
-    core.preload( enemiesSprite,
+    core.preload( enemiesSprite, lifePointSprite,
                   colorSprite[0], colorSprite[1], colorSprite[2],
                   colorSmallSprite[0], colorSmallSprite[1], colorSmallSprite[2],
                   foxSprite, projectileSprite, splashSprite,soundButtonSprite,backgroundSprite,pauseButtonSprite,muteButtonSprite, pausescreenSprite,startButtonSprite);
 
     
     //LABELS
-    var lifeBar = new Label();
+//    var lifeBar = new Label();
     var gameOverLabel = new Label();
 
 
@@ -130,9 +135,9 @@ window.onload = function() {
     gameOverLabel.text = "GAME<br>OVER";
 
 
-    lifeBar.text = "LIFE: "+life;
-    lifeBar.y = (10/contextHeight) * windowHeight;
-    lifeBar.x = (10/contextWidth) * windowWidth;
+   // lifeBar.text = "LIFE: "+life;
+    //lifeBar.y = (10/contextHeight) * windowHeight;
+    //lifeBar.x = (10/contextWidth) * windowWidth;
 
     //COMEÇA O JOGO
     core.onload = function(){
@@ -210,7 +215,16 @@ window.onload = function() {
 
 
             //ADD CHILD
-            gameScene.addChild(lifeBar);
+//            gameScene.addChild(lifeBar);
+            
+            for(var i =0; i < 10; i++){
+                    lifeBar[i] = new enchant.Sprite(lifePointWidth,lifePointHeight);
+                    lifeBar[i].image = core.assets[lifePointSprite];
+                    lifeBar[i].x = 0;
+                    lifeBar[i].y = i*lifePointHeight;
+
+                    gameScene.addChild(lifeBar[i]);
+            }
 
             //CRIA LISTA DOS INIMIGOS
             for(var i=0 ; i<monstersSize ; i++) {
@@ -480,8 +494,11 @@ window.onload = function() {
                             currentEnemy ++;
                             if(currentEnemy >= monstersSize)currentEnemy = 0;
 
+                            if( life %10 == 0 ) lifeBar[life/10]
+
                             //PERDE VIDA
                             life -= 5;
+
 
                             //ATUALIZA A BARRA DE VIDA
                             lifeBar.text = "LIFE: "+life;
