@@ -293,7 +293,7 @@ window.onload = function() {
 
                         //POSIÇÃO DO INIMIGO (CENTRO)
                         dx = (enemies[currentEnemy][0].x+(enemyWidth/2))-(windowWidth/2);
-                        dy = (enemies[currentEnemy][0].y+(enemyHeight/2))-(windowHeight-(foxWidth/2)-80-30);
+                        dy = (enemies[currentEnemy][0].y+(enemyHeight/2))-(windowHeight-(foxHeight/2)-50);
 
                         //CALCULA A DISTÂNCIA ENTRE O INIMIGO E A RAPOSA
                         hip = Math.sqrt((dx*dx)+(dy*dy));
