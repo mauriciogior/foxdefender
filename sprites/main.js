@@ -78,11 +78,17 @@ window.onload = function() {
     colorSprite[1] = 'fireball_red_2.png';
     colorSprite[2] = 'fireball_yellow_2.png';
 
+    var colorSmallSprite = new Array(3);
+    colorSmallSprite[0] = 'fireball_blue_small.png';
+    colorSmallSprite[1] = 'fireball_red_small.png';
+    colorSmallSprite[2] = 'fireball_yellow_small.png';
+
     var projectileSprite = 'cannonball.png';
     var splashSprite = 'splash.png';
 
     core.preload( enemiesSprite[0], enemiesSprite[1], enemiesSprite[2],
                   colorSprite[0], colorSprite[1], colorSprite[2],
+                  colorSmallSprite[0], colorSmallSprite[1], colorSmallSprite[2],
                   foxSprite, projectileSprite, splashSprite);
 
     //LABELS
@@ -117,7 +123,7 @@ window.onload = function() {
     core.onload = function(){
 
         //FPS ESPERADO
-        core.fps = 6;
+        core.fps = 60;
 
         var togo = false;
 
@@ -199,13 +205,10 @@ window.onload = function() {
             core.pushScene(gameScene);
 
             //CRIA PROJÉTIL
-            var projectile = new enchant.Sprite(20,20);
+            var projectile = new enchant.Sprite(25,26);
 
-            //SETA A IMAGEM DO INIMIGO
-            projectile.image = core.assets[projectileSprite];
-
-            //ROTACIONA O INIMIGO
-            projectile.rotate(-90);
+            //SETA A IMAGEM DO PROJÉTIL
+            projectile.image = core.assets[colorSmallSprite[enemies[currentEnemy][1]]];
 
             //ADD CHILD
             gameScene.addChild(projectile);
@@ -254,9 +257,9 @@ window.onload = function() {
                 if( i ==0) {
                     button[i].moveTo((windowWidth/2)-(buttonWidth/2)- 90, windowHeight - (buttonHeight/2)-35);
                 } else if (i == 1) {
-                    button[i].moveTo((windowWidth/2)-(buttonWidth/2)+ 60, windowHeight - (buttonHeight/2)-35);
+                    button[i].moveTo((windowWidth/2)-(buttonWidth/2)+ 75, windowHeight - (buttonHeight/2)-35);
                 } else {
-                    button[i].moveTo((windowWidth/2)-(buttonWidth/2)-20, windowHeight - (buttonHeight/2)-25);
+                    button[i].moveTo((windowWidth/2)-(buttonWidth/2)-5, windowHeight - (buttonHeight/2)-25);
                 }
 
                 //ADD CHILD
@@ -383,6 +386,9 @@ window.onload = function() {
                             //PRÓXIMO INIMIGO
                             currentEnemy ++;
 
+                            //NOVA IMAGEM DO PROJÉTIL
+                            projectile.image = core.assets[colorSmallSprite[enemies[currentEnemy][1]]];
+
                             //VOLTA PRA POSIÇÃO INICIAL O PROJÉTIL
                             projectilePos = 35;
                         }
@@ -435,8 +441,8 @@ window.onload = function() {
                     color = enemies[currentEnemy][1];
 
                     //SE APERTAR O BOTÃO CERTO
-                    if(enemies[currentEnemy][0].y >=0 && e.x >= button[color].x && e.x <= button[color].x+80
-                        && e.y >= button[color].y && e.y <= button[color].y+80){
+                    if(enemies[currentEnemy][0].y >=0 && e.x >= button[color].x && e.x <= button[color].x+buttonWidth
+                        && e.y >= button[color].y && e.y <= button[color].y+buttonHeight){
 
                         //PROJÉTIL ENTRA EM MOVIMENTO
                         projectileState = 1;
