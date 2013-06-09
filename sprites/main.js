@@ -1,14 +1,15 @@
 enchant();
 
-window.onload = function(){
+window.onload = function() {
+    var contextWidth = 320;
+    var contextHeight = 480;
     var windowWidth = 320;
     var windowHeight = 480;
     var lastAim = 0;
     var core = new Game(windowWidth, windowHeight);
 
-    var foxSprite = "cannon.png"
-
     //Sprites aqui!
+    var foxSprite = "cannon.png"
     var bolas = new Array(3);
 
     bolas[0] = 'bola_azul.jpg';
@@ -58,7 +59,7 @@ window.onload = function(){
 
             var botaoVida = new Label("Vida: "+vida);
             var botaoPause = new Label("Pause");
-            
+
 
             botaoVida.y = 10;
             botaoVida.x = 10;
@@ -145,18 +146,18 @@ window.onload = function(){
             var triangulo = function(e) {
                 if(!pause) {
                     cor = inimigos[atual][1];
-               
+
                     if(e.x >= botoes[cor].x && e.x <= botoes[cor].x+50 && e.y >= botoes[cor].y && e.y <= botoes[cor].y+50){
                             inimigos[atual][0].y -= 4800;
                             atual ++;
-                    
-                    } 
+
+                    }
 
                 }
             }
 
             botoes[0].addEventListener('touchstart', triangulo );
-            botoes[1].addEventListener('touchstart', triangulo ); 
+            botoes[1].addEventListener('touchstart', triangulo );
                     /*function() {
                 if(!pause) {
                     if(inimigos[atual][1] == 1) {
@@ -208,3 +209,4 @@ window.onload = function(){
     };
     core.start();
 };
+
