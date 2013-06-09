@@ -10,6 +10,8 @@ window.onload = function() {
     var monstersSize = 60;
     var core = new Game(windowWidth, windowHeight);
 
+    var mute = false;
+
     //SONS
     var gameMusic = document.createElement('audio');
     gameMusic.setAttribute('src', 'sounds/FoxDefender.mp3');
@@ -494,7 +496,7 @@ window.onload = function() {
                             currentEnemy ++;
                             if(currentEnemy >= monstersSize)currentEnemy = 0;
 
-                            if( life %10 == 0 ) lifeBar[life/10]
+                            if( (life+5) %10 == 0 ) gameScene.removeChild(lifeBar[((life+5)/10)-1])
 
                             //PERDE VIDA
                             life -= 5;
@@ -550,7 +552,7 @@ window.onload = function() {
             pauseButton.addEventListener('touchstart', function() {
                 if(pause == true) {
                     pause = false;
-                    gameMusic.play();
+                    if(!mute) gameMusic.play();
                     gameScene.removeChild(pausescreen);
                 }
                 else {
@@ -563,12 +565,14 @@ window.onload = function() {
             })
             soundButton.addEventListener('touchstart', function() {
                 //TODO fix STOP MUSIC!
+                mute = true;
                 gameMusic.pause();
                 gameScene.addChild(muteButton);
                 gameScene.removeChild(soundButton);
             })
             muteButton.addEventListener('touchstart', function() {
                 //TODO fix PLAY MUSIC!
+                mute = false;
                 gameMusic.play();
                 gameScene.removeChild(muteButton);
                 gameScene.addChild(soundButton);
