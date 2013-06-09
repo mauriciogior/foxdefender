@@ -1,16 +1,16 @@
 {
   "version": "0.1",
-  "name": "My Awesome App",
-  "description": "Your new awesome Open Web App",
+  "name": "Fox Defender",
+  "description": "An awesome fox defending it's universe!",
   "launch_path": "/index.html",
   "developer": {
-    "name": "Your Name",
-    "url": "http://yourawesomeapp.com"
+    "name": "Raphael, Maurício, Christian, Marcio, Paloma, Douglas",
+    "url": "http://svgen.com/firefox/app/"
   },
   "icons": {
-    "16": "/img/icons/mortar-16.png",
-    "48": "/img/icons/mortar-48.png",
-    "128": "/img/icons/mortar-128.png"
+    "16": "/icon.png",
+    "48": "/icon.png",
+    "128": "/icon.png"
   },
   "installs_allowed_from": ["*"],
   "appcache_path": "/cache.manifest",
