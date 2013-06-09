@@ -19,6 +19,9 @@ window.setTimeout(function() {
     var fireBallMusic = document.createElement('audio');
     fireBallMusic.setAttribute('src', 'sounds/fireball.mp3');
 
+    var hitMusic = document.createElement('audio');
+    hitMusic.setAttribute('src', 'sounds/hit.mp3');
+
     var buttonHeight = 62;
     var buttonWidth = 62;
 
@@ -30,6 +33,9 @@ window.setTimeout(function() {
 
     var enemyWidth = 50;
     var enemyHeight = 50;
+
+    var aimWidth = 50;
+    var aimHeight = 50;
 
 var deathCycle = 0;
 
@@ -141,6 +147,8 @@ var deathCycle = 0;
 
     var deathGradientSprite = 'death-gradient.png';
 
+    var aimSprite = 'alvo-01.png';
+
     core.preload(
             enemiesSprite,
             lifePointSprite,
@@ -156,7 +164,8 @@ var deathCycle = 0;
             pausescreenSprite,
             startButtonSprite,
             gameOverSprite,
-            deathGradientSprite
+            deathGradientSprite,
+            aimSprite
     );
 
 
@@ -165,13 +174,20 @@ var deathCycle = 0;
 
     var mainMenu = new enchant.Sprite(mainMenuWidth,mainMenuHeight);
     var startButton = new enchant.Sprite(startButtonWidth,startButtonHeight);
+    var aimImage = new enchant.Sprite(aimWidth,aimHeight);
 
     var scoreBar = new Label();
+    var aboutBar = new Label();
 
     scoreBar.text = "SCORE: "+score;
     scoreBar.color = "#fff";
     scoreBar.y = (10/contextHeight) * windowHeight;
     scoreBar.x = (10/contextWidth) * windowWidth + 20;
+
+    aboutBar.text = "Desenvolvedores:<br>Raphael Ferras<br>Christian Carrizo<br>Maurício Giordano<br>Douglas Drumond<br>Marcio Martins<br>Paloma Leslie";
+    aboutBar.y = (10/contextHeight) * windowHeight;
+    aboutBar.x = (10/contextWidth) * windowWidth + 20;
+    aboutBar.color = "#fff";
 
     //COMEÇA O JOGO
     core.onload = function(){
@@ -210,6 +226,7 @@ var deathCycle = 0;
             //ADD CHILD
             gameScene.addChild(mainMenu);
             gameScene.addChild(startButton);
+            gameScene.addChild(aboutBar);
 
             //CRIA CENA DO COMEÇO
             core.pushScene(gameScene);
@@ -494,6 +511,10 @@ var deathCycle = 0;
                         //CALCULA O ÂNGULO DE INCLINAÇÃO DO PROJÉTIL
                         projectileDir = 180-((aim)*57);
 
+                        aimImage.image = core.assets[aimSprite];
+                        aimImage.x = enemies[currentEnemy][0].x+enemyWidth/2-aimWidth/2;
+                        aimImage.y = enemies[currentEnemy][0].y+enemyHeight/2-aimHeight/2;
+                        gameScene.addChild(aimImage);
                         if(projectileState == 0 ) {
                             //AJUSTA A POSIÇÃO DO PROJÉTIL
                             projectile.moveTo(   windowWidth/2     - ((Math.cos((projectileDir/57)))*35)-(projectileWidth/2), (windowHeight-80)-(Math.sin((projectileDir/180)*3.14)*35) - (projectileHeight/2));
@@ -581,8 +602,11 @@ var deathCycle = 0;
                             //PERDE VIDA
                             life -= 5;
 
+                            hitMusic.play();
+
                             gameScene.addChild(deathGradient);
                             deathCycle = 10
+
                             if(life > 0) {
                                 if(typeof window.navigator.vibrate == 'function') {
                                     window.navigator.vibrate(200); 
@@ -635,6 +659,7 @@ var deathCycle = 0;
                             projectileState = 1;
                             projectileTarget = currentEnemy;
                             score += 25;
+                            fireBallMusic.play();
                         }
                 } );
 
@@ -643,6 +668,7 @@ var deathCycle = 0;
                             projectileState = 1;
                             projectileTarget = currentEnemy;                        
                             score += 25;
+                            fireBallMusic.play();
                         }
                 } );
 
@@ -651,6 +677,7 @@ var deathCycle = 0;
                             projectileState = 1;
                             projectileTarget = currentEnemy;
                             score += 25;
+                            fireBallMusic.play();
                         }
                 } );
 
