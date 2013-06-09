@@ -1,11 +1,17 @@
 enchant();
 
 window.onload = function() {
+
+    // screen control variables
     var contextWidth = 320;
     var contextHeight = 480;
     var windowWidth = 320;
     var windowHeight = 480;
+
+    // game control variables
     var lastAim = 0;
+
+    // Game core engine
     var core = new Game(windowWidth, windowHeight);
     var dir = 0;
     //Sprites aqui!
