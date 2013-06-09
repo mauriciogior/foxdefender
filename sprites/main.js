@@ -539,7 +539,7 @@ var deathCycle = 0;
                             life -= 5;
 
                             gameScene.addChild(deathGradient);
-                            deathCycle = 3
+                            deathCycle = 10
 
                             projectile.image = core.assets[colorSmallSprite[enemies[currentEnemy][1]]];
                         }
@@ -580,7 +580,6 @@ var deathCycle = 0;
 
             //CLIQUE E SWIPE DOS CONTROLES
                 button[0].addEventListener('touchstart', function(e){
-                        console.log("currentEnemyColor:" + enemies[currentEnemy][1] + " touchColor:" + 0);
                         if(enemies[currentEnemy][1] == 0 && enemies[currentEnemy][0].y >= 0 ){
                             projectileState = 1;
                             projectileTarget = currentEnemy;
@@ -588,7 +587,6 @@ var deathCycle = 0;
                 } );
 
                 button[1].addEventListener('touchstart', function(e){
-                        console.log("currentEnemyColor:" + enemies[currentEnemy][1] + " touchColor:" + 1);
                         if(enemies[currentEnemy][1] == 1 && enemies[currentEnemy][0].y >= 0 ){
                             projectileState = 1;
                             projectileTarget = currentEnemy;
@@ -596,7 +594,6 @@ var deathCycle = 0;
                 } );
 
                 button[2].addEventListener('touchstart', function(e){
-                        console.log("currentEnemyColor:" + enemies[currentEnemy][1] + " touchColor:" + 2);
                         if(enemies[currentEnemy][1] == 2 && enemies[currentEnemy][0].y >= 0 ){
                             projectileState = 1;
                             projectileTarget = currentEnemy;
