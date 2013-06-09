@@ -100,7 +100,7 @@ window.onload = function(){
                     if(atual == 60)
                         atual = 0;
                     for(var i=0 ; i<60 ; i++) {
-                        inimigos[i][0].y += 7;
+                        inimigos[i][0].y += 9;
                     }
                     if(inimigos[atual][0].y > 360) {
                         inimigos[atual][0].y -= 4800;
