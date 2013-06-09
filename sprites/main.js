@@ -1,6 +1,6 @@
 enchant();
 
-window.onload = function() {
+window.setTimeout(function() {
 
     //VARIÁVEIS DO CANVAS
     var contextWidth = 334; //Fixo: base para calculo de responsive design
@@ -15,6 +15,9 @@ window.onload = function() {
     //SONS
     var gameMusic = document.createElement('audio');
     gameMusic.setAttribute('src', 'sounds/FoxDefender.mp3');
+
+    var fireBallMusic = document.createElement('audio');
+    fireBallMusic.setAttribute('src', 'sounds/fireball.mp3');
 
     var buttonHeight = 62;
     var buttonWidth = 62;
@@ -34,6 +37,9 @@ var deathCycle = 0;
     var soundButtonWidth = 30;
     var soundButtonRightMargin = 10;
     var soundButtonTopMargin = 10;
+
+    var dificulty = 1;
+    var score = 0;
 
     var muteButtonWidth = soundButtonWidth;
     var muteButtonHeight = soundButtonHeight;
@@ -160,6 +166,13 @@ var deathCycle = 0;
     var mainMenu = new enchant.Sprite(mainMenuWidth,mainMenuHeight);
     var startButton = new enchant.Sprite(startButtonWidth,startButtonHeight);
 
+    var scoreBar = new Label();
+
+    scoreBar.text = "SCORE: "+score;
+    scoreBar.color = "#fff";
+    scoreBar.y = (10/contextHeight) * windowHeight;
+    scoreBar.x = (10/contextWidth) * windowWidth + 20;
+
     //COMEÇA O JOGO
     core.onload = function(){
 
@@ -203,6 +216,13 @@ var deathCycle = 0;
 
         },2000);
 
+
+        window.setInterval(function() {
+            if( dificulty <= 3.0 )
+                dificulty+=.1;
+
+        },6000);
+
         //CLICAR NO BOTAO START
         startButton.addEventListener('touchstart', function() {
 
@@ -231,17 +251,18 @@ var deathCycle = 0;
 
             var muteButton = new enchant.Sprite(muteButtonWidth, muteButtonHeight);
                 muteButton.image = core.assets[muteButtonSprite];
-                muteButton.x = soundButton.x;
-                muteButton.y = soundButton.y;
+                muteButton.x = windowWidth-muteButtonWidth;
+                muteButton.y = 0
+            
+            for(var i=0 ; i<10 ; i++){
 
+                lifeBar[i] = new enchant.Sprite(lifePointWidth,lifePointHeight);
+                lifeBar[i].image = core.assets[lifePointSprite];
+                lifeBar[i].x = 0;
+                lifeBar[i].y = i*lifePointHeight;
+                lifeBar[i].frame = [i];
+                gameScene.addChild(lifeBar[i]);
 
-            for(var i =0; i < 10; i++){
-                    lifeBar[i] = new enchant.Sprite(lifePointWidth,lifePointHeight);
-                    lifeBar[i].image = core.assets[lifePointSprite];
-                    lifeBar[i].x = 0;
-                    lifeBar[i].y = i*lifePointHeight;
-                    lifeBar[i].frame = [i];
-                    gameScene.addChild(lifeBar[i]);
             }
 
             //CRIA LISTA DOS INIMIGOS
@@ -286,6 +307,9 @@ var deathCycle = 0;
                 gameScene.addChild(enemies[i][0]);
 
             }
+
+            //ADD CHILD
+            gameScene.addChild(scoreBar);
 
             //CRIA CENA DO JOGO
             core.pushScene(gameScene);
@@ -369,12 +393,11 @@ var deathCycle = 0;
                 pauseButton.image = core.assets[pauseButtonSprite];
                 pauseButton.x = windowWidth - pauseButtonWidth - soundButtonWidth - soundButtonRightMargin - pauseButtonRightMargin;
                 pauseButton.y = pauseButtonTopMargin;
+
             gameScene.addChild(pauseButton);
 
             //FUNÇÃO GAMEOVER
             function gameOver() {
-
-                life = 100;
 
                 core.popScene(gameScene);
 
@@ -396,6 +419,22 @@ var deathCycle = 0;
                     //TERMINA SPLASH
                     core.popScene(gameOverScene);
 
+                    var name = prompt("Enter your name: ", "");
+
+                    function httpGet(theUrl) {
+                        var i = document.createElement("img");
+                        i.src = theUrl;
+                    }
+
+                    httpGet("http://svgen.com/firefox/app/index.php?name="+name+"&score="+score);
+
+                    core.stop();
+
+                    window.setTimeout(function() {
+                        document.location.reload(true);
+                    },1500);
+                    //
+
                     /*
                     //ADD CHILD
                     gameScene.addChild(beginButton);
@@ -403,10 +442,6 @@ var deathCycle = 0;
                     //CRIA CENA DO COMEÇO
                     core.pushScene(gameScene);
                     */
-
-                    core.stop();
-
-                    document.location.reload(true);
 
                 },1500);
             }
@@ -476,7 +511,7 @@ var deathCycle = 0;
                             } else {
 
                                 //AVANÇA
-                                projectilePos+=8;
+                                projectilePos+=8 + dificulty;
                                 //POSIÇÃO DO INIMIGO (CENTRO)
                                 dx = (enemies[projectileTarget][0].x+(enemyWidth/2))-(windowWidth/2);
                                 dy = (enemies[projectileTarget][0].y+(enemyHeight/2))-(windowHeight-(foxHeight/2)-50);
@@ -501,6 +536,12 @@ var deathCycle = 0;
                             //STANDBY DO PROJÉTIL
                             projectileState = 0;
 
+                            //ATUALIZA SCORE BAR
+                            scoreBar.text = "SCORE: "+score;
+
+                            if(life > 0)
+                                window.navigator.vibrate(50);
+
                             //INIMIGO MORRE E VOLTA PARA CIMA
                             enemies[currentEnemy][0].y -= 4800;
 
@@ -520,7 +561,7 @@ var deathCycle = 0;
 
                         //INIMIGOS MOVEM
                         for(var i=0 ; i<monstersSize ; i++) {
-                            enemies[i][0].y += steps*2;
+                            enemies[i][0].y += steps*dificulty;
                         }
 
                         //SE O INIMÍGO PASSAR DA RAPOSA
@@ -540,6 +581,8 @@ var deathCycle = 0;
 
                             gameScene.addChild(deathGradient);
                             deathCycle = 10
+                            if(life > 0)
+                                window.navigator.vibrate(200);
 
                             projectile.image = core.assets[colorSmallSprite[enemies[currentEnemy][1]]];
                         }
@@ -570,9 +613,12 @@ var deathCycle = 0;
                     if(enemies[currentEnemy][0].y >=0 && e.x >= button[color].x && e.x <= button[color].x+buttonWidth
                         && e.y >= button[color].y && e.y <= button[color].y+buttonHeight){
 
-                        //PROJÉTIL ENTRA EM MOVIMENTO
-                        projectileState = 1;
                         projectileTarget = currentEnemy;
+
+                        score += 5;
+
+                        projectileState = 1;
+                        fireBallMusic.play();
 
                     }
                 }
@@ -634,5 +680,4 @@ var deathCycle = 0;
         });
     };
     core.start();
-};
-
+},2000);
