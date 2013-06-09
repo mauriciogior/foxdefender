@@ -1,3 +1,21 @@
+var facebook = false;
+/*if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+}
+else {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+}
+xmlhttp.onreadystatechange=function() {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+        alert(xmlhttp.responseText);
+  }
+}
+xmlhttp.open("POST","http://svgen.com/firefox/app/",true);
+xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+xmlhttp.send("fname=Henry&lname=Ford");
+*/
+
+if(facebook) {
 enchant();
 
 window.onload = function() {
@@ -34,7 +52,8 @@ window.onload = function() {
     var soundButtonHeight = 30;
     var soundButtonWidth = 30;
 
-    var dificulty = 0;
+    var dificulty = 1;
+    var score = 0;
 
     var muteButtonWidth = soundButtonWidth;
     var muteButtonHeight = soundButtonHeight;
@@ -48,13 +67,11 @@ window.onload = function() {
     var mainMenuWidth = windowWidth;
     var mainMenuHeight = windowHeight;
 
-    var startButtonWidth = 256;
-    var startButtonHeight = 136;
+    var startButtonWidth = 187;
+    var startButtonHeight = 97;
 
     var lifePointWidth = 20;
     var lifePointHeight = 14;
-
-    var dificulty = 0;
 
     //VARIÁVEIS DAS CENAS
     var splashScene = new Scene();
@@ -131,7 +148,7 @@ window.onload = function() {
 
     
     //LABELS
-//    var lifeBar = new Label();
+    var scoreBar = new Label();
     var gameOverLabel = new Label();
 
 
@@ -144,9 +161,10 @@ window.onload = function() {
     gameOverLabel.text = "GAME<br>OVER";
 
 
-   // lifeBar.text = "LIFE: "+life;
-    //lifeBar.y = (10/contextHeight) * windowHeight;
-    //lifeBar.x = (10/contextWidth) * windowWidth;
+    scoreBar.text = "SCORE: "+score;
+    scoreBar.color = "#fff";
+    scoreBar.y = (10/contextHeight) * windowHeight;
+    scoreBar.x = (10/contextWidth) * windowWidth + 20;
 
     //COMEÇA O JOGO
     core.onload = function(){
@@ -191,6 +209,13 @@ window.onload = function() {
 
         },2000);
 
+
+        window.setInterval(function() {
+
+            dificulty+=.1;
+
+        },6000);
+
         //CLICAR NO BOTAO START
         startButton.addEventListener('touchstart', function() {
 
@@ -221,10 +246,6 @@ window.onload = function() {
                 muteButton.image = core.assets[muteButtonSprite];
                 muteButton.x = windowWidth-muteButtonWidth;
                 muteButton.y = 0
-
-
-            //ADD CHILD
-//            gameScene.addChild(lifeBar);
             
             for(var i=0 ; i<10 ; i++){
 
@@ -279,6 +300,9 @@ window.onload = function() {
                 gameScene.addChild(enemies[i][0]);
 
             }
+
+            //ADD CHILD
+            gameScene.addChild(scoreBar);
 
             //CRIA CENA DO JOGO
             core.pushScene(gameScene);
@@ -355,7 +379,7 @@ window.onload = function() {
 
             var pauseButton = new enchant.Sprite(pauseButtonWidth,pauseButtonHeight);
                 pauseButton.image = core.assets[pauseButtonSprite];
-                pauseButton.x = windowWidth-pauseButtonWidth-soundButtonWidth;
+                pauseButton.x = windowWidth-pauseButtonWidth-soundButtonWidth-10;
                 pauseButton.y = 0
             gameScene.addChild(pauseButton);
 
@@ -408,6 +432,8 @@ window.onload = function() {
                     //CALCULA O FRAME DO BROWSER
                     steps = (currentTime-lastTime)/16;
 
+                    console.log(steps*dificulty);
+
                     //SE NÃO FOR A PRIMEIRA VEZ DO LOOP
                     if(lastTime != 0) {
 
@@ -444,11 +470,11 @@ window.onload = function() {
 
                             if( enemies[projectileTarget][0].y < 0 ){
                                 //CORREÇÂO DE BUG, TIRO PERDIDO
-                                projectileState = 2;
+                                projectileState = 0;
                             } else {
 
                                 //AVANÇA
-                                projectilePos+=8;
+                                projectilePos+=8 + dificulty;
                                 //POSIÇÃO DO INIMIGO (CENTRO)
                                 dx = (enemies[projectileTarget][0].x+(enemyWidth/2))-(windowWidth/2);
                                 dy = (enemies[projectileTarget][0].y+(enemyHeight/2))-(windowHeight-(foxHeight/2)-50);
@@ -473,6 +499,11 @@ window.onload = function() {
                             //STANDBY DO PROJÉTIL
                             projectileState = 0;
 
+                            //ATUALIZA SCORE BAR
+                            scoreBar.text = "SCORE: "+dificulty;
+
+                            window.navigator.vibrate(50);
+
                             //INIMIGO MORRE E VOLTA PARA CIMA
                             enemies[currentEnemy][0].y -= 4800;
 
@@ -492,7 +523,7 @@ window.onload = function() {
 
                         //INIMIGOS MOVEM
                         for(var i=0 ; i<monstersSize ; i++) {
-                            enemies[i][0].y += steps*2;
+                            enemies[i][0].y += steps*dificulty;
                         }
 
                         //SE O INIMÍGO PASSAR DA RAPOSA
@@ -509,6 +540,7 @@ window.onload = function() {
 
                             //PERDE VIDA
                             life -= 5;
+                            window.navigator.vibrate(200);
 
 
                             //ATUALIZA A BARRA DE VIDA
@@ -544,9 +576,11 @@ window.onload = function() {
                     if(enemies[currentEnemy][0].y >=0 && e.x >= button[color].x && e.x <= button[color].x+buttonWidth
                         && e.y >= button[color].y && e.y <= button[color].y+buttonHeight){
 
-                        //PROJÉTIL ENTRA EM MOVIMENTO
-                        projectileState = 1;
                         projectileTarget = currentEnemy;
+
+                        score += 5;
+
+                        projectileState = 1;
                         fireBallMusic.play();
 
                     }
@@ -595,3 +629,4 @@ window.onload = function() {
     core.start();
 };
 
+}
