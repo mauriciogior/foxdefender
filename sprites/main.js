@@ -10,6 +10,7 @@ window.onload = function() {
 
     // game control variables
     var lastAim = 0;
+    var pause = false;
 
     // Game core engine
     var core = new Game(windowWidth, windowHeight);
@@ -39,8 +40,11 @@ window.onload = function() {
     // Cena do controle de pausa
     var pauseControlScene = new Scene();
     var pauseButton = new Label();
-    pauseButton.font = "30px sans-serif";
-    pauseButton.text = "‖";
+    pauseButton.font = "20px sans-serif";
+    pauseButton.text = "‖ pause";
+    pauseButton.x = (240/contextWidth) * windowWidth;
+    pauseButton.y = (10/contextHeight) * windowHeight;
+    pauseButton.addEventListener('touchstart', function() { pause = !pause; });
     pauseControlScene.addChild(pauseButton);
 
 
@@ -65,7 +69,6 @@ window.onload = function() {
         core.fps = 60;
 
         var vida = 100;
-        var pause = false;
         // an example of adding a Node object
 
         core.pushScene(telaInicial);
@@ -82,16 +85,13 @@ window.onload = function() {
             core.popScene(telaInicial);
 
             var botaoVida = new Label("Vida: "+vida);
-            var botaoPause = new Label("Pause");
 
 
             botaoVida.y = (10/contextHeight) * windowHeight;
             botaoVida.x = (10/contextWidth) * windowWidth;
             jogo.addChild(botaoVida);
 
-            botaoPause.y = (10/contextHeight) * windowHeight;
-            botaoPause.x = (240/contextWidth) * windowWidth;
-            jogo.addChild(botaoPause);
+            core.pushScene(pauseControlScene);
 
             //Cria o objeto
             var inimigos = new Array(60);
@@ -155,7 +155,7 @@ window.onload = function() {
 
                 if(!pause) {
                     tempoAtual = new Date().getTime();
-                    
+
                     steps = (tempoAtual-tempoAnterior)/16;
 
                     if(tempoAnterior != 0) {
@@ -196,7 +196,7 @@ window.onload = function() {
 
                         if(atual == 60)
                             atual = 0;
-                       
+
                     }
                     tempoAnterior = tempoAtual;
                 }
@@ -217,13 +217,7 @@ window.onload = function() {
                 botoes[i].addEventListener('touchmove', triangulo );
                 botoes[i].addEventListener('touchstart', triangulo );
             }
-            
-            botaoPause.addEventListener('touchstart', function() {
-                if(pause)
-                    pause = false;
-                else
-                    pause = true;
-            });
+
 
         });
 
