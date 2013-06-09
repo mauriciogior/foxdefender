@@ -84,13 +84,13 @@ window.onload = function() {
 
     var colorSprite = new Array(3);
     colorSprite[0] = 'fireball_blue_2.png';
-    colorSprite[1] = 'fireball_red_2.png';
-    colorSprite[2] = 'fireball_yellow_2.png';
+    colorSprite[1] = 'fireball_yellow_2.png';
+    colorSprite[2] = 'fireball_red_2.png';
 
     var colorSmallSprite = new Array(3);
     colorSmallSprite[0] = 'fireball_blue_small.png';
-    colorSmallSprite[1] = 'fireball_red_small.png';
-    colorSmallSprite[2] = 'fireball_yellow_small.png';
+    colorSmallSprite[1] = 'fireball_yellow_small.png';
+    colorSmallSprite[2] = 'fireball_red_small.png';
 
     var projectileSprite = 'cannonball.png';
     var splashSprite = 'splash_2.png';
@@ -175,24 +175,24 @@ window.onload = function() {
                 this.currentTime = 0;
                 this.play();
             }, false);
-            
+
             var background = new enchant.Sprite(windowWidth,windowHeight);
                 background.image = core.assets[backgroundSprite];
                 background.x = 0;
                 background.y = 0
                 gameScene.addChild(background);
-                
+
             var soundButton = new enchant.Sprite(soundButtonWidth,soundButtonHeight);
                 soundButton.image = core.assets[soundButtonSprite];
                 soundButton.x = windowWidth-soundButtonWidth;
                 soundButton.y = 0
                 gameScene.addChild(soundButton);
-            
+
             var muteButton = new enchant.Sprite(muteButtonWidth,muteButtonHeight);
                 muteButton.image = core.assets[muteButtonSprite];
                 muteButton.x = windowWidth-muteButtonWidth;
                 muteButton.y = 0
-            
+
 
             //ADD CHILD
             gameScene.addChild(lifeBar);
@@ -222,7 +222,7 @@ window.onload = function() {
                 enemies[i][0].moveTo(20 + random, 10 - i*80);
 
                 //SETA OS FRAMES QUE SERÂO EXIBIDOS
-                if ( color == 0 ){  
+                if ( color == 0 ){
                 enemies[i][0].frame = [color,color,color,color,color,color,color,color,color,color,
                                         color+1,color+1,color+1,color+1,color+1,color+1,color+1,color+1,color+1 ];
                 } else if(color == 1 ){
@@ -257,10 +257,10 @@ window.onload = function() {
 
             //SETA A IMAGEM DA RAPOSA
             fox.image = core.assets[foxSprite];
-            fox.frame = [0, 0,0, 0,0, 0, 0, 0,0, 0,0, 0, 
-                         1, 1,1, 1,1, 1, 1, 1,1, 1,1, 1, 
-                         0, 0,0, 0,0, 0, 0, 0,0, 0,0, 0, 
-                         1, 1,1, 1,1, 1, 1, 1,1, 1,1, 1, 
+            fox.frame = [0, 0,0, 0,0, 0, 0, 0,0, 0,0, 0,
+                         1, 1,1, 1,1, 1, 1, 1,1, 1,1, 1,
+                         0, 0,0, 0,0, 0, 0, 0,0, 0,0, 0,
+                         1, 1,1, 1,1, 1, 1, 1,1, 1,1, 1,
                          3, 3,3, 3,3, 3, 3, 3,3, 3,3, 3,
                          4, 4,4, 4,4, 4, 4, 4,4, 4,4, 4,
                          3, 3,3, 3,3, 3, 3, 3,3, 3,3, 3,
@@ -284,10 +284,10 @@ window.onload = function() {
                 //SETA A IMAGEM DO BOTÃO
                 button[i].image = core.assets[colorSprite[i]];
 
-                button[i].frame = [0, 0,0, 0,0, 0, 0, 0,0, 0,0, 0, 
-                             1, 1,1, 1,1, 1, 1, 1,1, 1,1, 1, 
-                             2, 2,2, 2,2, 2, 2, 2,2, 2,2, 2, 
-                             3, 3,3, 3,3, 3, 3, 3,3, 3,3, 3, 
+                button[i].frame = [0, 0,0, 0,0, 0, 0, 0,0, 0,0, 0,
+                             1, 1,1, 1,1, 1, 1, 1,1, 1,1, 1,
+                             2, 2,2, 2,2, 2, 2, 2,2, 2,2, 2,
+                             3, 3,3, 3,3, 3, 3, 3,3, 3,3, 3,
                              4, 4,4, 4,4, 4, 4, 4,4, 4,4, 4,
                              5, 5,5, 5,5, 5, 5, 5,5, 5,5, 5,
                              6, 6,6, 6,6, 6, 6, 6,6, 6,6, 6,
@@ -303,7 +303,7 @@ window.onload = function() {
 
                 //ADD CHILD
                 gameScene.addChild(button[i]);
-                
+
 
             }
 
@@ -352,7 +352,7 @@ window.onload = function() {
 
             //LOOP DO JOGO
             gameScene.addEventListener('enterframe', function() {
-                
+
                 //SE NÃO TIVER PAUSADO
                 if(pause == false) {
 
@@ -421,7 +421,7 @@ window.onload = function() {
 
                                 //CALCULA O ÂNGULO DE INCLINAÇÃO DO PROJÉTIL
                                 projectileDir = 180-((aim)*57);
-    
+
                                 //SETA A POSIÇÃO
                                 projectile.moveTo(windowWidth/2-((Math.cos((projectileDir/57)))*projectilePos)-(projectileWidth/2), (windowHeight-80)-(Math.sin((projectileDir/180)*3.14)*projectilePos)-(projectileHeight/2));
                             }
@@ -470,8 +470,8 @@ window.onload = function() {
 
                             //ATUALIZA A BARRA DE VIDA
                             lifeBar.text = "LIFE: "+life;
-                            console.log("ae");  
-                            console.log(currentEnemy);  
+                            console.log("ae");
+                            console.log(currentEnemy);
                             projectile.image = core.assets[colorSmallSprite[enemies[currentEnemy][1]]];
                         }
 
