@@ -115,29 +115,40 @@ window.onload = function(){
 
                 jogo.addChild(botoes[i]);
             }
+            var tempoAtual = 0;
+            var tempoAnterior = 0;
+            var steps = 0;
 
             jogo.addEventListener('enterframe', function() {
 
                 if(!pause) {
-                    if(atual == 60)
-                        atual = 0;
-                    dx = (inimigos[atual][0].x+25)-(windowWidth/2);
-                    dy = (inimigos[atual][0].y+25)-(windowHeight-120);
-                    hip = Math.sqrt((dx*dx)+(dy*dy));
-                    aim = Math.acos((((inimigos[atual][0].x+25)-windowWidth/2))/hip);
-                    fox.rotate((lastAim-aim)*57);
-                    lastAim = aim;
-                    for(var i=0 ; i<60 ; i++) {
-                        inimigos[i][0].y += 1;
+                    tempoAtual = new Date().getTime();
+                    
+                    steps = (tempoAtual-tempoAnterior)/16;
+
+                    if(tempoAnterior != 0) {
+                       if(atual == 60)
+                            atual = 0;
+                        dx = (inimigos[atual][0].x+25)-(windowWidth/2);
+                        dy = (inimigos[atual][0].y+25)-(windowHeight-120);
+                        hip = Math.sqrt((dx*dx)+(dy*dy));
+                        aim = Math.acos((((inimigos[atual][0].x+25)-windowWidth/2))/hip);
+                        fox.rotate((lastAim-aim)*57);
+                        lastAim = aim;
+                        for(var i=0 ; i<60 ; i++) {
+                            inimigos[i][0].y += steps;
+                        }
+                        if(inimigos[atual][0].y > 360) {
+                            inimigos[atual][0].y -= 4800;
+                            vida -= 5;
+                            atual ++;
+                            botaoVida.text = "Vida: "+vida;
+                        }
+                        if(atual == 60)
+                            atual = 0;
+                       
                     }
-                    if(inimigos[atual][0].y > 360) {
-                        inimigos[atual][0].y -= 4800;
-                        vida -= 5;
-                        atual ++;
-                        botaoVida.text = "Vida: "+vida;
-                    }
-                    if(atual == 60)
-                        atual = 0;
+                    tempoAnterior = tempoAtual;
                 }
 
             });
@@ -146,37 +157,22 @@ window.onload = function(){
                 if(!pause) {
                     cor = inimigos[atual][1];
                
-                    if(e.x >= botoes[cor].x && e.x <= botoes[cor].x+50 && e.y >= botoes[cor].y && e.y <= botoes[cor].y+50){
+                    
+                        if(e.x >= botoes[cor].x && e.x <= botoes[cor].x+80 && e.y >= botoes[cor].y && e.y <= botoes[cor].y+80){
                             inimigos[atual][0].y -= 4800;
                             atual ++;
+                           // tempo = core.fps;
+                        }
                     
-                    } 
 
                 }
             }
 
-            botoes[0].addEventListener('touchstart', triangulo );
-            botoes[1].addEventListener('touchstart', triangulo ); 
-                    /*function() {
-                if(!pause) {
-                    if(inimigos[atual][1] == 1) {
-                        inimigos[atual][0].y -= 4800;
-                        atual ++;
-                    }
-                }
-            });*/
-            botoes[2].addEventListener('touchstart', triangulo );
-            for( var i =0;i<3; i++){
-            botoes[i].addEventListener('touchmove', triangulo );
+            for(var i=0 ; i<3 ; i++){
+                botoes[i].addEventListener('touchmove', triangulo );
+                botoes[i].addEventListener('touchstart', triangulo );
             }
-            /* function() {
-                if(!pause) {
-                    if(inimigos[atual][1] == 2) {
-                        inimigos[atual][0].y -= 4800;
-                        atual ++;
-                    }
-                }
-            });*/
+            
             botaoPause.addEventListener('touchstart', function() {
                 if(pause)
                     pause = false;
