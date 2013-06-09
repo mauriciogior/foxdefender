@@ -36,6 +36,7 @@ window.onload = function() {
 
     var pauseButtonWidth = 30;
     var pauseButtonHeight = 30;
+    var pauseButtonRightMargin = 10;
 
     var pausescreenWidth = windowWidth;
     var pausescreenHeight = windowHeight;
@@ -361,7 +362,7 @@ window.onload = function() {
 
             var pauseButton = new enchant.Sprite(pauseButtonWidth,pauseButtonHeight);
                 pauseButton.image = core.assets[pauseButtonSprite];
-                pauseButton.x = windowWidth-pauseButtonWidth-soundButtonWidth;
+                pauseButton.x = windowWidth-pauseButtonWidth-soundButtonWidth - pauseButtonRightMargin;
                 pauseButton.y = 0
             gameScene.addChild(pauseButton);
 
