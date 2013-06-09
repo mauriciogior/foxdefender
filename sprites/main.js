@@ -38,6 +38,12 @@ window.onload = function() {
     var pausescreenWidth = windowWidth;
     var pausescreenHeight = windowHeight;
 
+    var mainMenuWidth = windowWidth;
+    var mainMenuHeight = windowHeight;
+
+    var startButtonWidth = 256;
+    var startButtonHeight = 136;
+
     //VARIÁVEIS DAS CENAS
     var splashScene = new Scene();
     var gameScene = new Scene();
@@ -100,31 +106,29 @@ window.onload = function() {
     var pauseButtonSprite = 'pauseButton.png';
 
     var backgroundSprite = 'background.png';
+    var startButtonSprite = 'start.png';
 
     var pausescreenSprite = 'pausescreen.png';
 
     core.preload( enemiesSprite,
                   colorSprite[0], colorSprite[1], colorSprite[2],
                   colorSmallSprite[0], colorSmallSprite[1], colorSmallSprite[2],
-                  foxSprite, projectileSprite, splashSprite,soundButtonSprite,backgroundSprite,pauseButtonSprite,muteButtonSprite, pausescreenSprite);
+                  foxSprite, projectileSprite, splashSprite,soundButtonSprite,backgroundSprite,pauseButtonSprite,muteButtonSprite, pausescreenSprite,startButtonSprite);
 
+    
     //LABELS
-    var beginButton = new Label();
     var lifeBar = new Label();
     var gameOverLabel = new Label();
 
 
-    beginButton.textAlign = "center";
-    beginButton.font = "50px sans-serif";
-    beginButton.text = "START<br>GAME";
+    var mainMenu = new enchant.Sprite(mainMenuWidth,mainMenuHeight);
+    var startButton = new enchant.Sprite(startButtonWidth,startButtonHeight);
 
     gameOverLabel.textAlign = "center";
     gameOverLabel.y = (150/contextHeight) * windowHeight;
     gameOverLabel.x = (15/contextWidth) * windowWidth;
     gameOverLabel.text = "GAME<br>OVER";
 
-    beginButton.y = (150/contextHeight) * windowHeight;
-    beginButton.x = (15/contextWidth) * windowWidth;
 
     lifeBar.text = "LIFE: "+life;
     lifeBar.y = (10/contextHeight) * windowHeight;
@@ -154,9 +158,19 @@ window.onload = function() {
 
             //TERMINA SPLASH
             core.popScene(splashScene);
+            
+            
+            mainMenu.image = core.assets[backgroundSprite];
+            mainMenu.y = 0;
+            mainMenu.x = 0;
+
+            startButton.image = core.assets[startButtonSprite];
+            startButton.x = (windowWidth/2)-(startButtonWidth/2);
+            startButton.y = (windowHeight/2)-(startButtonHeight/2);
 
             //ADD CHILD
-            gameScene.addChild(beginButton);
+            gameScene.addChild(mainMenu);
+            gameScene.addChild(startButton);
 
             //CRIA CENA DO COMEÇO
             core.pushScene(gameScene);
@@ -164,10 +178,11 @@ window.onload = function() {
         },2000);
 
         //CLICAR NO BOTAO START
-        beginButton.addEventListener('touchstart', function() {
+        startButton.addEventListener('touchstart', function() {
 
             //REMOVE CHILD
-            gameScene.removeChild(beginButton);
+            gameScene.removeChild(mainMenu);
+            gameScene.removeChild(startButton);
 
             //COMEÇA A MUSICA
             gameMusic.play();
