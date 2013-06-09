@@ -10,8 +10,17 @@ window.onload = function() {
     var monstersSize = 60;
     var core = new Game(windowWidth, windowHeight);
 
-    var buttonHeight = 60;
-    var buttonWidth = 60;
+    var buttonHeight = 44;
+    var buttonWidth = 42;
+
+    var projectileWidth = 20;
+    var projectileHeight = 20;
+
+    var foxWidth = 60;
+    var foxHeight = 80;
+
+    var enemyWidth = 50;
+    var enemyHeight = 50;
 
     //VARIÁVEIS DAS CENAS
     var startScreenScene = new Scene();
@@ -30,7 +39,7 @@ window.onload = function() {
     var color = 0;
 
     //VARIÁVEIS DOS SPRITES
-    var enemie = new Array(monstersSize);
+    var enemies = new Array(monstersSize);
     var button = new Array(3);
     var dx,dy;
     var random;
@@ -59,9 +68,9 @@ window.onload = function() {
     enemiesSprite[2] = 'bola_amarela.jpg';
 
     var colorSprite = new Array(3);
-    colorSprite[0] = 'botao_azul.jpg';
-    colorSprite[1] = 'botao_vermelho.jpg';
-    colorSprite[2] = 'botao_amarelo.jpg';
+    colorSprite[0] = 'fireball_blue.png';
+    colorSprite[1] = 'fireball_red.png';
+    colorSprite[2] = 'fireball_yellow.png';
 
     var projectileSprite = 'cannonball.png';
 
@@ -109,7 +118,6 @@ window.onload = function() {
 
             //DERRUBA A CENA DO COMEÇO
             core.popScene(startScreenScene);
-
             //ADD CHILD
             gameScene.addChild(lifeBar);
             gameScene.addChild(pauseButton);
@@ -162,13 +170,13 @@ window.onload = function() {
             gameScene.addChild(projectile);
 
             //CRIA RAPOSA
-            var fox = new enchant.Sprite(80,80);
+            var fox = new enchant.Sprite(foxWidth,foxHeight);
 
             //SETA A IMAGEM DA RAPOSA
             fox.image = core.assets[foxSprite];
 
             //MOVE A RAPOSA
-            fox.moveTo(windowWidth/2-80/2,windowHeight-120);
+            fox.moveTo(windowWidth/2-foxWidth/2,windowHeight-foxHeight/2-80);
 
             //ROTACIONA A RAPOSA
             fox.rotate(-90);
@@ -213,18 +221,18 @@ window.onload = function() {
                     if(lastTime != 0) {
 
                         //SE PASSAR DO monstersSize, VOLTA NO 0
-                        if(currentEnemie >= monstersSize)
-                            currentEnemie = 0;
+                        if(currentEnemy >= monstersSize)
+                            currentEnemy = 0;
 
                         //POSIÇÃO DO INIMIGO (CENTRO)
-                        dx = (enemies[currentEnemy][0].x+25)-(windowWidth/2);
-                        dy = (enemies[currentEnemy][0].y+25)-(windowHeight-120);
+                        dx = (enemies[currentEnemy][0].x+(enemyWidth/2))-(windowWidth/2);
+                        dy = (enemies[currentEnemy][0].y+(enemyHeight/2))-(windowHeight-(foxWidth/2)-80-30);
 
                         //CALCULA A DISTÂNCIA ENTRE O INIMIGO E A RAPOSA
                         hip = Math.sqrt((dx*dx)+(dy*dy));
 
                         //CALCULA O ÂNGULO DE INCLINAÇÃO
-                        aim = Math.acos((((enemies[currentEnemy][0].x+25)-windowWidth/2))/hip);
+                        aim = Math.acos((((enemies[currentEnemy][0].x+(enemyWidth/2))-windowWidth/2))/hip);
 
                         //ROTACIONA A RAPOSA DE ACORDO COM O ÂNGULO ACIMA
                         fox.rotate((lastAim-aim)*57);
@@ -233,16 +241,22 @@ window.onload = function() {
                         projectileDir = 180-((aim)*57);
 
                         //AJUSTA A POSIÇÃO DO PROJÉTIL
-                        projectile.moveTo(windowWidth/2-((Math.cos((projectileDir/57)))*55)-10, (windowHeight-110)-(Math.sin((projectileDir/180)*3.14)*55)+25);
+                        projectile.moveTo(   windowWidth/2     - ((Math.cos((projectileDir/57)))*55)-(projectileWidth/2), (windowHeight-80)-(Math.sin((projectileDir/180)*3.14)*55) - (projectileHeight/2));
 
                         //SE O PROJÉTIL ESTIVER MOVENDO
                         if(projectileState == 1) {
 
-                            //AVANÇA
-                            projectilePos+=5;
+                            if( enemies[currentEnemy][0].y < 0 ){
+                                //CORREÇÂO DE BUG, TIRO PERDIDO
+                                projectileState = 2;
+                            } else {
 
-                            //SETA A POSIÇÃO
-                            projectile.moveTo(windowWidth/2-((Math.cos((projectileDir/57)))*projectilePos)-10, (windowHeight-110)-(Math.sin((projectileDir/180)*3.14)*projectilePos)+25);
+                                //AVANÇA
+                                projectilePos+=5;
+    
+                                //SETA A POSIÇÃO
+                                projectile.moveTo(windowWidth/2-((Math.cos((projectileDir/57)))*projectilePos)-10, (windowHeight-110)-(Math.sin((projectileDir/180)*3.14)*projectilePos)+25);
+                            }
                         }
 
                         //SE O PROJÉTIL INTERCEPTAR E ESTIVER EM MOVIMENTO
@@ -262,15 +276,15 @@ window.onload = function() {
                         }
 
                         //SE PASSAR DO monstersSize, VOLTA NO 0
-                        if(currentEnemie >= monstersSize)
-                            currentEnemie = 0;
+                        if(currentEnemy >= monstersSize)
+                            currentEnemy = 0;
 
                         //A MIRA ANTIGA RECEBE A ATUAL
                         lastAim = aim;
 
                         //INIMIGOS MOVEM
                         for(var i=0 ; i<monstersSize ; i++) {
-                            enemie[i][0].y += steps*2;
+                            enemies[i][0].y += steps*2;
                         }
 
                         //SE O INIMÍGO PASSAR DA RAPOSA
@@ -290,8 +304,8 @@ window.onload = function() {
                         }
 
                         //SE PASSAR DO monstersSize, VOLTA NO 0
-                        if(currentEnemie == monstersSize)
-                            currentEnemie = 0;
+                        if(currentEnemy == monstersSize)
+                            currentEnemy = 0;
                     }
                     //ATUALIZA O TEMPO
                     lastTime = currentTime;
@@ -309,7 +323,7 @@ window.onload = function() {
                     color = enemies[currentEnemy][1];
 
                     //SE APERTAR O BOTÃO CERTO
-                    if(e.x >= button[color].x && e.x <= button[color].x+80
+                    if(enemies[currentEnemy][0].y >=0 && e.x >= button[color].x && e.x <= button[color].x+80
                         && e.y >= button[color].y && e.y <= button[color].y+80){
 
                         //PROJÉTIL ENTRA EM MOVIMENTO
