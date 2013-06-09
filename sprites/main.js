@@ -386,8 +386,6 @@ window.setTimeout(function() {
             //FUNÇÃO GAMEOVER
             function gameOver() {
 
-                life = 100;
-
                 core.popScene(gameScene);
 
                 gameOverLabelSprite.image = core.assets[gameOverSprite];
