@@ -39,7 +39,8 @@ window.onload = function(){
         var pause = false;
         // an example of adding a Node object
 
-        var botaoIniciar = new Label("Clique aqui para iniciar o jogo");
+        var botaoIniciar = new Label("START<br>GAME");
+        botaoIniciar.textAlign = "center";
 
         botaoIniciar.y = 100;
         botaoIniciar.x = 50;
@@ -63,7 +64,7 @@ window.onload = function(){
             botaoVida.x = 10;
             jogo.addChild(botaoVida);
 
-            botaoPause.y = 280;
+            botaoPause.y = 10;
             botaoPause.x = 240;
             jogo.addChild(botaoPause);
 
