@@ -49,6 +49,9 @@ window.onload = function() {
     var lifePointWidth = 20;
     var lifePointHeight = 14;
 
+    var gameOverLabelWidth = 160;
+    var gameOverLabelHeight = 98;
+
     //VARIÁVEIS DAS CENAS
     var splashScene = new Scene();
     var gameScene = new Scene();
@@ -113,14 +116,27 @@ window.onload = function() {
 
     var backgroundSprite = 'background.png';
     var startButtonSprite = 'start.png';
+    var gameOverLabelSprite = 'gameover.png';
 
     var pausescreenSprite = 'pausescreen.png';
     var lifePointSprite = 'lifepoint.png';
 
-    core.preload( enemiesSprite, lifePointSprite,
-                  colorSprite[0], colorSprite[1], colorSprite[2],
-                  colorSmallSprite[0], colorSmallSprite[1], colorSmallSprite[2],
-                  foxSprite, projectileSprite, splashSprite,soundButtonSprite,backgroundSprite,pauseButtonSprite,muteButtonSprite, pausescreenSprite,startButtonSprite);
+    core.preload(
+            enemiesSprite,
+            lifePointSprite,
+            colorSprite[0], colorSprite[1], colorSprite[2],
+            colorSmallSprite[0], colorSmallSprite[1], colorSmallSprite[2],
+            foxSprite,
+            projectileSprite,
+            splashSprite,
+            soundButtonSprite,
+            backgroundSprite,
+            pauseButtonSprite,
+            muteButtonSprite,
+            pausescreenSprite,
+            startButtonSprite,
+            gameOverLabelSprite
+    );
 
 
     //LABELS
