@@ -1,7 +1,12 @@
 enchant();
 
 window.onload = function(){
-    var core = new Game(320, 480);
+    var windowWidth = 320;
+    var windowHeight = 480;
+    var lastAim = 0;
+    var core = new Game(windowWidth, windowHeight);
+
+    var foxSprite = "cannon.png"
 
     //Sprites aqui!
     var bolas = new Array(3);
@@ -19,8 +24,11 @@ window.onload = function(){
     var telaInicial = new Scene();
     var jogo = new Scene();
 
+    var projetil;
+//    var iniProj,endProj;
+
     //Carrega os sprites aqui!
-    core.preload(bolas[0],bolas[1],bolas[2],botaoSprite[0],botaoSprite[1],botaoSprite[2]);
+    core.preload(bolas[0],bolas[1],bolas[2],botaoSprite[0],botaoSprite[1],botaoSprite[2],foxSprite);
 
     //Quando carregar as imagens, faça isso:
     core.onload = function(){
@@ -31,7 +39,8 @@ window.onload = function(){
         var pause = false;
         // an example of adding a Node object
 
-        var botaoIniciar = new Label("Clique aqui para iniciar o jogo");
+        var botaoIniciar = new Label("START<br>GAME");
+        botaoIniciar.textAlign = "center";
 
         botaoIniciar.y = 100;
         botaoIniciar.x = 50;
@@ -49,20 +58,26 @@ window.onload = function(){
 
             var botaoVida = new Label("Vida: "+vida);
             var botaoPause = new Label("Pause");
+            
 
             botaoVida.y = 10;
             botaoVida.x = 10;
             jogo.addChild(botaoVida);
 
-            botaoPause.y = 280;
+            botaoPause.y = 10;
             botaoPause.x = 240;
             jogo.addChild(botaoPause);
 
             //Cria o objeto
             var inimigos = new Array(60);
             var botoes = new Array(3);
-
+            var dx,dy;
             var j;
+
+
+
+            //fox.rotate(aim);
+
 
             for(var i=0 ; i<60 ; i++) {
 
@@ -72,7 +87,7 @@ window.onload = function(){
                 inimigos[i][0] = new enchant.Sprite(50, 50);
                 inimigos[i][1] = cor;
 
-                j = Math.random()*200;
+                j = Math.random()*(320-90);
 
                 inimigos[i][0].image = core.assets[bolas[cor]];
 
@@ -83,24 +98,37 @@ window.onload = function(){
                 jogo.addChild(inimigos[i][0]);
             }
 
-            for(i=0 ; i<3 ; i++) {
-                botoes[i] = new enchant.Sprite(80,78);
-                botoes[i].image = core.assets[botaoSprite[i]];
-                botoes[i].moveTo(5 + i*110, 400);
-
-                jogo.addChild(botoes[i]);
-            }
             core.pushScene(jogo);
 
             var atual = 0;
+
+            var fox = new enchant.Sprite(80,80);
+            fox.image = core.assets[foxSprite];
+            fox.moveTo(windowWidth/2-80/2,windowHeight-120);
+            fox.rotate(-90);
+
+            jogo.addChild(fox);
+            for(i=0 ; i<3 ; i++) {
+                botoes[i] = new enchant.Sprite(80,78);
+                botoes[i].image = core.assets[botaoSprite[i]];
+                botoes[i].moveTo(5 + i*110, windowHeight-80);
+
+                jogo.addChild(botoes[i]);
+            }
 
             jogo.addEventListener('enterframe', function() {
 
                 if(!pause) {
                     if(atual == 60)
                         atual = 0;
+                    dx = (inimigos[atual][0].x+25)-(windowWidth/2);
+                    dy = (inimigos[atual][0].y+25)-(windowHeight-120);
+                    hip = Math.sqrt((dx*dx)+(dy*dy));
+                    aim = Math.acos((((inimigos[atual][0].x+25)-windowWidth/2))/hip);
+                    fox.rotate((lastAim-aim)*57);
+                    lastAim = aim;
                     for(var i=0 ; i<60 ; i++) {
-                        inimigos[i][0].y += 9;
+                        inimigos[i][0].y += 1;
                     }
                     if(inimigos[atual][0].y > 360) {
                         inimigos[atual][0].y -= 4800;
@@ -113,31 +141,42 @@ window.onload = function(){
                 }
 
             });
-
-            botoes[0].addEventListener('touchstart', function() {
+            var cor;
+            var triangulo = function(e) {
                 if(!pause) {
-                    if(inimigos[atual][1] == 0) {
-                        inimigos[atual][0].y -= 4800;
-                        atual ++;
-                    }
+                    cor = inimigos[atual][1];
+               
+                    if(e.x >= botoes[cor].x && e.x <= botoes[cor].x+50 && e.y >= botoes[cor].y && e.y <= botoes[cor].y+50){
+                            inimigos[atual][0].y -= 4800;
+                            atual ++;
+                    
+                    } 
+
                 }
-            });
-            botoes[1].addEventListener('touchstart', function() {
+            }
+
+            botoes[0].addEventListener('touchstart', triangulo );
+            botoes[1].addEventListener('touchstart', triangulo ); 
+                    /*function() {
                 if(!pause) {
                     if(inimigos[atual][1] == 1) {
                         inimigos[atual][0].y -= 4800;
                         atual ++;
                     }
                 }
-            });
-            botoes[2].addEventListener('touchstart', function() {
+            });*/
+            botoes[2].addEventListener('touchstart', triangulo );
+            for( var i =0;i<3; i++){
+            botoes[i].addEventListener('touchmove', triangulo );
+            }
+            /* function() {
                 if(!pause) {
                     if(inimigos[atual][1] == 2) {
                         inimigos[atual][0].y -= 4800;
                         atual ++;
                     }
                 }
-            });
+            });*/
             botaoPause.addEventListener('touchstart', function() {
                 if(pause)
                     pause = false;
