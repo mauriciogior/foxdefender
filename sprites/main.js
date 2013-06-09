@@ -119,7 +119,7 @@ window.onload = function() {
     var gameOverLabelSprite = 'gameover.png';
 
     var pausescreenSprite = 'pausescreen.png';
-    var lifePointSprite = 'lifepoint.png';
+    var lifePointSprite = 'lifebar.png';
 
     core.preload(
             enemiesSprite,
@@ -240,7 +240,7 @@ window.onload = function() {
                     lifeBar[i].image = core.assets[lifePointSprite];
                     lifeBar[i].x = 0;
                     lifeBar[i].y = i*lifePointHeight;
-
+                    lifeBar[i].frame = [i];
                     gameScene.addChild(lifeBar[i]);
             }
 
@@ -451,7 +451,7 @@ window.onload = function() {
 
                             if( enemies[projectileTarget][0].y < 0 ){
                                 //CORREÇÂO DE BUG, TIRO PERDIDO
-                                projectileState = 2;
+                                projectileState = 0;
                             } else {
 
                                 //AVANÇA
