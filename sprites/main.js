@@ -43,8 +43,8 @@ window.onload = function() {
     var mainMenuWidth = windowWidth;
     var mainMenuHeight = windowHeight;
 
-    var startButtonWidth = 256;
-    var startButtonHeight = 136;
+    var startButtonWidth = 187;
+    var startButtonHeight = 97;
 
     var lifePointWidth = 20;
     var lifePointHeight = 14;
@@ -122,7 +122,7 @@ window.onload = function() {
                   colorSmallSprite[0], colorSmallSprite[1], colorSmallSprite[2],
                   foxSprite, projectileSprite, splashSprite,soundButtonSprite,backgroundSprite,pauseButtonSprite,muteButtonSprite, pausescreenSprite,startButtonSprite);
 
-    
+
     //LABELS
 //    var lifeBar = new Label();
     var gameOverLabel = new Label();
@@ -165,8 +165,8 @@ window.onload = function() {
 
             //TERMINA SPLASH
             core.popScene(splashScene);
-            
-            
+
+
             mainMenu.image = core.assets[backgroundSprite];
             mainMenu.y = 0;
             mainMenu.x = 0;
@@ -218,7 +218,7 @@ window.onload = function() {
 
             //ADD CHILD
 //            gameScene.addChild(lifeBar);
-            
+
             for(var i =0; i < 10; i++){
                     lifeBar[i] = new enchant.Sprite(lifePointWidth,lifePointHeight);
                     lifeBar[i].image = core.assets[lifePointSprite];
