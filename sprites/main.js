@@ -1,6 +1,6 @@
 enchant();
 
-window.onload = function() {
+window.setTimeout(function() {
 
     //VARIÁVEIS DO CANVAS
     var contextWidth = 334; //Fixo: base para calculo de responsive design
@@ -33,6 +33,8 @@ window.onload = function() {
 
     var soundButtonHeight = 30;
     var soundButtonWidth = 30;
+    var soundButtonRightMargin = 10;
+    var soundButtonTopMargin = 10;
 
     var dificulty = 1;
     var score = 0;
@@ -42,6 +44,8 @@ window.onload = function() {
 
     var pauseButtonWidth = 30;
     var pauseButtonHeight = 30;
+    var pauseButtonRightMargin = 15;
+    var pauseButtonTopMargin = soundButtonTopMargin;
 
     var pausescreenWidth = windowWidth;
     var pausescreenHeight = windowHeight;
@@ -54,6 +58,12 @@ window.onload = function() {
 
     var lifePointWidth = 20;
     var lifePointHeight = 14;
+
+    var gameOverLabelWidth = 160;
+    var gameOverLabelHeight = 98;
+
+    var gameOverBackgroundWidth = windowWidth;
+    var gameOverBackgroundHeight = windowHeight;
 
     //VARIÁVEIS DAS CENAS
     var splashScene = new Scene();
@@ -119,29 +129,36 @@ window.onload = function() {
 
     var backgroundSprite = 'background.png';
     var startButtonSprite = 'start.png';
+    var gameOverSprite = 'gameover.png';
 
     var pausescreenSprite = 'pausescreen.png';
     var lifePointSprite = 'lifepoint.png';
 
-    core.preload( enemiesSprite, lifePointSprite,
-                  colorSprite[0], colorSprite[1], colorSprite[2],
-                  colorSmallSprite[0], colorSmallSprite[1], colorSmallSprite[2],
-                  foxSprite, projectileSprite, splashSprite,soundButtonSprite,backgroundSprite,pauseButtonSprite,muteButtonSprite, pausescreenSprite,startButtonSprite);
+    core.preload(
+            enemiesSprite,
+            lifePointSprite,
+            colorSprite[0], colorSprite[1], colorSprite[2],
+            colorSmallSprite[0], colorSmallSprite[1], colorSmallSprite[2],
+            foxSprite,
+            projectileSprite,
+            splashSprite,
+            soundButtonSprite,
+            backgroundSprite,
+            pauseButtonSprite,
+            muteButtonSprite,
+            pausescreenSprite,
+            startButtonSprite,
+            gameOverSprite
+    );
 
-    
-    //LABELS
-    var scoreBar = new Label();
-    var gameOverLabel = new Label();
 
+    var gameOverLabelSprite = new enchant.Sprite(gameOverLabelWidth, gameOverLabelHeight);
+    var gameOverBackground = new enchant.Sprite(gameOverBackgroundWidth, gameOverBackgroundHeight);
 
     var mainMenu = new enchant.Sprite(mainMenuWidth,mainMenuHeight);
     var startButton = new enchant.Sprite(startButtonWidth,startButtonHeight);
 
-    gameOverLabel.textAlign = "center";
-    gameOverLabel.y = (150/contextHeight) * windowHeight;
-    gameOverLabel.x = (15/contextWidth) * windowWidth;
-    gameOverLabel.text = "GAME<br>OVER";
-
+    var scoreBar = new Label();
 
     scoreBar.text = "SCORE: "+score;
     scoreBar.color = "#fff";
@@ -162,6 +179,7 @@ window.onload = function() {
         splash.y = 0;
         splash.x = 0;
 
+
         //ADD CHILD
         splashScene.addChild(splash);
 
@@ -172,8 +190,7 @@ window.onload = function() {
 
             //TERMINA SPLASH
             core.popScene(splashScene);
-            
-            
+
             mainMenu.image = core.assets[backgroundSprite];
             mainMenu.y = 0;
             mainMenu.x = 0;
@@ -218,13 +235,13 @@ window.onload = function() {
                 background.y = 0
                 gameScene.addChild(background);
 
-            var soundButton = new enchant.Sprite(soundButtonWidth,soundButtonHeight);
+            var soundButton = new enchant.Sprite(soundButtonWidth, soundButtonHeight);
                 soundButton.image = core.assets[soundButtonSprite];
-                soundButton.x = windowWidth-soundButtonWidth;
-                soundButton.y = 0
+                soundButton.x = windowWidth - soundButtonWidth - soundButtonRightMargin;
+                soundButton.y = soundButtonTopMargin;
                 gameScene.addChild(soundButton);
 
-            var muteButton = new enchant.Sprite(muteButtonWidth,muteButtonHeight);
+            var muteButton = new enchant.Sprite(muteButtonWidth, muteButtonHeight);
                 muteButton.image = core.assets[muteButtonSprite];
                 muteButton.x = windowWidth-muteButtonWidth;
                 muteButton.y = 0
@@ -361,8 +378,9 @@ window.onload = function() {
 
             var pauseButton = new enchant.Sprite(pauseButtonWidth,pauseButtonHeight);
                 pauseButton.image = core.assets[pauseButtonSprite];
-                pauseButton.x = windowWidth-pauseButtonWidth-soundButtonWidth-10;
-                pauseButton.y = 0
+                pauseButton.x = windowWidth - pauseButtonWidth - soundButtonWidth - soundButtonRightMargin - pauseButtonRightMargin;
+                pauseButton.y = pauseButtonTopMargin;
+
             gameScene.addChild(pauseButton);
 
             //FUNÇÃO GAMEOVER
@@ -372,7 +390,16 @@ window.onload = function() {
 
                 core.popScene(gameScene);
 
-                gameOverScene.addChild(gameOverLabel);
+                gameOverLabelSprite.image = core.assets[gameOverSprite];
+                gameOverLabelSprite.x = (windowWidth - gameOverLabelWidth)/2;
+                gameOverLabelSprite.y = (windowHeight - gameOverLabelHeight)/2;
+
+                gameOverBackground.image = core.assets[backgroundSprite];
+                gameOverBackground.y = 0;
+                gameOverBackground.x = 0;
+
+                gameOverScene.addChild(gameOverBackground);
+                gameOverScene.addChild(gameOverLabelSprite);
 
                 core.pushScene(gameOverScene);
 
@@ -496,7 +523,8 @@ window.onload = function() {
                             //ATUALIZA SCORE BAR
                             scoreBar.text = "SCORE: "+score;
 
-                            window.navigator.vibrate(50);
+                            if(life > 0)
+                                window.navigator.vibrate(50);
 
                             //INIMIGO MORRE E VOLTA PARA CIMA
                             enemies[currentEnemy][0].y -= 4800;
@@ -534,13 +562,11 @@ window.onload = function() {
 
                             //PERDE VIDA
                             life -= 5;
-                            window.navigator.vibrate(200);
+
+                            if(life > 0)
+                                window.navigator.vibrate(200);
 
 
-                            //ATUALIZA A BARRA DE VIDA
-                            lifeBar.text = "LIFE: "+life;
-                            console.log("ae");
-                            console.log(currentEnemy);
                             projectile.image = core.assets[colorSmallSprite[enemies[currentEnemy][1]]];
                         }
 
@@ -621,4 +647,4 @@ window.onload = function() {
         });
     };
     core.start();
-};
+},2000);
