@@ -10,8 +10,9 @@ window.onload = function() {
     var core = new Game(windowWidth, windowHeight);
 
     //VARIÁVEIS DAS CENAS
-    var startScreenScene = new Scene();
+    var splashScene = new Scene();
     var gameScene = new Scene();
+    var gameOverScene = new Scene();
     var pause = false;
 
     //VARIÁVEIS DA MIRA
@@ -69,6 +70,7 @@ window.onload = function() {
     var pauseButton = new Label();
     var beginButton = new Label();
     var lifeBar = new Label();
+    var gameOverLabel = new Label();
 
     //LABELS DEFINITION
     pauseButton.font = "30px sans-serif";
@@ -80,6 +82,11 @@ window.onload = function() {
     beginButton.textAlign = "center";
     beginButton.font = "50px sans-serif";
     beginButton.text = "START<br>GAME";
+
+    gameOverLabel.textAlign = "center";
+    gameOverLabel.y = (150/contextHeight) * windowHeight;
+    gameOverLabel.x = (15/contextWidth) * windowWidth;
+    gameOverLabel.text = "GAME<br>OVER";
 
     beginButton.y = (150/contextHeight) * windowHeight;
     beginButton.x = (15/contextWidth) * windowWidth;
@@ -94,17 +101,38 @@ window.onload = function() {
         //FPS ESPERADO
         core.fps = 60;
 
-        //ADD CHILD
-        startScreenScene.addChild(beginButton);
+        var togo = false;
 
-        //CRIA CENA DO COMEÇO
-        core.pushScene(startScreenScene);
+        //CRIA SPRITE DO SPLASH
+        splash = new enchant.Sprite(80,80);
+        splash.image = core.assets[foxSprite];
+        splash.y = 200;
+        splash.x = 140;
+
+        //ADD CHILD
+        splashScene.addChild(splash);
+
+        //CRIA CENA DE SPLASH
+        core.pushScene(splashScene);
+
+        window.setTimeout(function() {
+
+            //TERMINA SPLASH
+            core.popScene(splashScene);
+
+            //ADD CHILD
+            gameScene.addChild(beginButton);
+
+            //CRIA CENA DO COMEÇO
+            core.pushScene(gameScene);
+
+        },2000);
 
         //CLICAR NO BOTAO START
         beginButton.addEventListener('touchstart', function() {
 
-            //DERRUBA A CENA DO COMEÇO
-            core.popScene(startScreenScene);
+            //REMOVE CHILD
+            gameScene.removeChild(beginButton);
 
             //ADD CHILD
             gameScene.addChild(lifeBar);
@@ -188,11 +216,48 @@ window.onload = function() {
                 gameScene.addChild(button[i]);
             }
 
+            //FUNÇÃO GAMEOVER
+            function gameOver() {
+
+                life = 100;
+
+                core.popScene(gameScene);
+
+                gameOverScene.addChild(gameOverLabel);
+
+                core.pushScene(gameOverScene);
+
+                window.setTimeout(function() {
+
+                    //TERMINA SPLASH
+                    core.popScene(gameOverScene);
+
+                    /*
+                    //ADD CHILD
+                    gameScene.addChild(beginButton);
+
+                    //CRIA CENA DO COMEÇO
+                    core.pushScene(gameScene);
+                    */
+
+                    core.stop();
+
+                    document.location.reload(true);
+
+                },1500);
+            }
+
             //LOOP DO JOGO
             gameScene.addEventListener('enterframe', function() {
 
                 //SE NÃO TIVER PAUSADO
                 if(!pause) {
+
+                    //SE ACABOU A VIDA
+                    if(life <= 0) {
+                        gameOver();
+                        this.removeEventListener('enterframe');
+                    }
 
                     //PEGA A DATA ATUAL
                     currentTime = new Date().getTime();
