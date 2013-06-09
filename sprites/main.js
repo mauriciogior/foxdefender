@@ -79,12 +79,12 @@ window.onload = function() {
             var botaoPause = new Label("Pause");
 
 
-            botaoVida.y = 10;
-            botaoVida.x = 10;
+            botaoVida.y = (10/contextHeight) * windowHeight;
+            botaoVida.x = (10/contextWidth) * windowWidth;
             jogo.addChild(botaoVida);
 
-            botaoPause.y = 10;
-            botaoPause.x = 240;
+            botaoPause.y = (10/contextHeight) * windowHeight;
+            botaoPause.x = (240/contextWidth) * windowWidth;
             jogo.addChild(botaoPause);
 
             //Cria o objeto
