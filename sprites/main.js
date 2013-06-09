@@ -14,8 +14,8 @@ window.onload = function() {
     var gameMusic = document.createElement('audio');
     gameMusic.setAttribute('src', 'sounds/FoxDefender.mp3');
 
-    var buttonHeight = 44;
-    var buttonWidth = 42;
+    var buttonHeight = 62;
+    var buttonWidth = 62;
 
     var projectileWidth = 20;
     var projectileHeight = 20;
@@ -51,7 +51,7 @@ window.onload = function() {
 
     //DIREÇÃO DO PROJÉTIL
     var projectileDir = 0;
-    var projectilePos = 54;
+    var projectilePos = 34;
 
     //ESTADOS DO PROJÉTIL
     var projectileState = 0; //0: standby -  1: movimento
@@ -74,9 +74,9 @@ window.onload = function() {
     enemiesSprite[2] = 'bola_amarela.jpg';
 
     var colorSprite = new Array(3);
-    colorSprite[0] = 'fireball_blue.png';
-    colorSprite[1] = 'fireball_red.png';
-    colorSprite[2] = 'fireball_yellow.png';
+    colorSprite[0] = 'fireball_blue_2.png';
+    colorSprite[1] = 'fireball_red_2.png';
+    colorSprite[2] = 'fireball_yellow_2.png';
 
     var projectileSprite = 'cannonball.png';
     var splashSprite = 'splash.png';
@@ -117,7 +117,7 @@ window.onload = function() {
     core.onload = function(){
 
         //FPS ESPERADO
-        core.fps = 60;
+        core.fps = 6;
 
         var togo = false;
 
@@ -241,13 +241,22 @@ window.onload = function() {
 
                 //SETA A IMAGEM DO BOTÃO
                 button[i].image = core.assets[colorSprite[i]];
+
+                button[i].frame = [0, 0,0, 0,0, 0, 0, 0,0, 0,0, 0, 
+                             1, 1,1, 1,1, 1, 1, 1,1, 1,1, 1, 
+                             2, 2,2, 2,2, 2, 2, 2,2, 2,2, 2, 
+                             3, 3,3, 3,3, 3, 3, 3,3, 3,3, 3, 
+                             4, 4,4, 4,4, 4, 4, 4,4, 4,4, 4,
+                             5, 5,5, 5,5, 5, 5, 5,5, 5,5, 5,
+                             6, 6,6, 6,6, 6, 6, 6,6, 6,6, 6,
+                             7, 7,7, 7,7, 7, 7, 7,7, 7,7, 7];
                     //MOVE O BOTÂO
                 if( i ==0) {
-                    button[i].moveTo((windowWidth/2)-(buttonWidth/2)- 60, windowHeight - (buttonHeight/2)-10);
+                    button[i].moveTo((windowWidth/2)-(buttonWidth/2)- 90, windowHeight - (buttonHeight/2)-35);
                 } else if (i == 1) {
-                    button[i].moveTo((windowWidth/2)-(buttonWidth/2)+ 60, windowHeight - (buttonHeight/2)-10);
+                    button[i].moveTo((windowWidth/2)-(buttonWidth/2)+ 60, windowHeight - (buttonHeight/2)-35);
                 } else {
-                    button[i].moveTo((windowWidth/2)-(buttonWidth/2), windowHeight - (buttonHeight/2)-50);
+                    button[i].moveTo((windowWidth/2)-(buttonWidth/2)-20, windowHeight - (buttonHeight/2)-25);
                 }
 
                 //ADD CHILD
@@ -328,7 +337,7 @@ window.onload = function() {
 
                         if(projectileState == 0 ) {
                             //AJUSTA A POSIÇÃO DO PROJÉTIL
-                            projectile.moveTo(   windowWidth/2     - ((Math.cos((projectileDir/57)))*55)-(projectileWidth/2), (windowHeight-80)-(Math.sin((projectileDir/180)*3.14)*55) - (projectileHeight/2));
+                            projectile.moveTo(   windowWidth/2     - ((Math.cos((projectileDir/57)))*35)-(projectileWidth/2), (windowHeight-80)-(Math.sin((projectileDir/180)*3.14)*35) - (projectileHeight/2));
 
                         }
 
@@ -343,7 +352,7 @@ window.onload = function() {
                             } else {
 
                                 //AVANÇA
-                                projectilePos+=5;
+                                projectilePos+=8;
                                 //POSIÇÃO DO INIMIGO (CENTRO)
                                 dx = (enemies[projectileTarget][0].x+(enemyWidth/2))-(windowWidth/2);
                                 dy = (enemies[projectileTarget][0].y+(enemyHeight/2))-(windowHeight-(foxHeight/2)-50);
@@ -375,7 +384,7 @@ window.onload = function() {
                             currentEnemy ++;
 
                             //VOLTA PRA POSIÇÃO INICIAL O PROJÉTIL
-                            projectilePos = 55;
+                            projectilePos = 35;
                         }
 
                         //SE PASSAR DO monstersSize, VOLTA NO 0
