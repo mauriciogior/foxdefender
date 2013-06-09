@@ -1,20 +1,19 @@
 enchant();
 
 window.onload = function() {
-    
+
     //VARIÁVEIS DO CANVAS
-    var contextWidth = 320;
-    var contextHeight = 480;
-    var windowWidth = 320;
-    var windowHeight = 480;
+    var contextWidth = 320; //Fixo: base para calculo de responsive design
+    var contextHeight = 480; //Fixo: base para calculo de responsive design
+    var windowWidth = 320; //TODO: pegar do device
+    var windowHeight = 480; //TODO: pegar do device
     var core = new Game(windowWidth, windowHeight);
 
     //VARIÁVEIS DAS CENAS
-    var pauseControlScene = new Scene();
     var startScreenScene = new Scene();
     var gameScene = new Scene();
     var pause = false;
-    
+
     //VARIÁVEIS DA MIRA
     var hip = 0;
     var aim = 0;
@@ -73,7 +72,10 @@ window.onload = function() {
 
     //LABELS DEFINITION
     pauseButton.font = "30px sans-serif";
-    pauseButton.text = "‖";
+    pauseButton.text = "||";
+    pauseButton.addEventListener('touchstart', function() { pause = !pause; });
+    pauseButton.y = (10/contextHeight) * windowHeight;
+    pauseButton.x = (280/contextWidth) * windowWidth;
 
     beginButton.textAlign = "center";
     beginButton.font = "50px sans-serif";
@@ -86,15 +88,12 @@ window.onload = function() {
     lifeBar.y = (10/contextHeight) * windowHeight;
     lifeBar.x = (10/contextWidth) * windowWidth;
 
-    pauseButton.y = (10/contextHeight) * windowHeight;
-    pauseButton.x = (240/contextWidth) * windowWidth;
-
     //COMEÇA O JOGO
     core.onload = function(){
 
         //FPS ESPERADO
         core.fps = 60;
-        
+
         //ADD CHILD
         startScreenScene.addChild(beginButton);
 
@@ -197,7 +196,7 @@ window.onload = function() {
 
                     //PEGA A DATA ATUAL
                     currentTime = new Date().getTime();
-                    
+
                     //CALCULA O FRAME DO BROWSER
                     steps = (currentTime-lastTime)/16;
 
@@ -241,7 +240,7 @@ window.onload = function() {
                         if(enemie[currentEnemie][0].intersect(projectile) && projectileState == 1){
 
                             //STANDBY DO PROJÉTIL
-                            projectileState = 0; 
+                            projectileState = 0;
 
                             //INIMIGO MORRE E VOLTA PARA CIMA
                             enemie[currentEnemie][0].y -= 4800;
@@ -302,7 +301,7 @@ window.onload = function() {
                     color = enemie[currentEnemie][1];
 
                     //SE APERTAR O BOTÃO CERTO
-                    if(e.x >= button[color].x && e.x <= button[color].x+80 
+                    if(e.x >= button[color].x && e.x <= button[color].x+80
                         && e.y >= button[color].y && e.y <= button[color].y+80){
 
                         //PROJÉTIL ENTRA EM MOVIMENTO
@@ -317,14 +316,7 @@ window.onload = function() {
                 button[i].addEventListener('touchmove', controls );
                 button[i].addEventListener('touchstart', controls );
             }
-            
-            //CLIQUE DO BOTÃO PAUSE
-            pauseButton.addEventListener('touchstart', function() {
-                if(pause)
-                    pause = false;
-                else
-                    pause = true;
-            });
+
 
         });
     };
