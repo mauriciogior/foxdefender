@@ -14,6 +14,9 @@ window.onload = function() {
     var gameMusic = document.createElement('audio');
     gameMusic.setAttribute('src', 'sounds/FoxDefender.mp3');
 
+    var fireBallMusic = document.createElement('audio');
+    fireBallMusic.setAttribute('src', 'sounds/fireball.mp3');
+
     var buttonHeight = 62;
     var buttonWidth = 62;
 
@@ -28,6 +31,8 @@ window.onload = function() {
 
     var soundButtonHeight = 30;
     var soundButtonWidth = 30;
+
+    var dificulty = 0;
 
     var muteButtonWidth = soundButtonWidth;
     var muteButtonHeight = soundButtonHeight;
@@ -46,6 +51,8 @@ window.onload = function() {
 
     var lifePointWidth = 20;
     var lifePointHeight = 14;
+
+    var dificulty = 0;
 
     //VARIÁVEIS DAS CENAS
     var splashScene = new Scene();
@@ -217,13 +224,15 @@ window.onload = function() {
             //ADD CHILD
 //            gameScene.addChild(lifeBar);
             
-            for(var i =0; i < 10; i++){
-                    lifeBar[i] = new enchant.Sprite(lifePointWidth,lifePointHeight);
-                    lifeBar[i].image = core.assets[lifePointSprite];
-                    lifeBar[i].x = 0;
-                    lifeBar[i].y = i*lifePointHeight;
+            for(var i=0 ; i<10 ; i++){
 
-                    gameScene.addChild(lifeBar[i]);
+                lifeBar[i] = new enchant.Sprite(lifePointWidth,lifePointHeight);
+                lifeBar[i].image = core.assets[lifePointSprite];
+                lifeBar[i].x = 0;
+                lifeBar[i].y = i*lifePointHeight;
+
+                gameScene.addChild(lifeBar[i]);
+
             }
 
             //CRIA LISTA DOS INIMIGOS
@@ -536,6 +545,7 @@ window.onload = function() {
                         //PROJÉTIL ENTRA EM MOVIMENTO
                         projectileState = 1;
                         projectileTarget = currentEnemy;
+                        fireBallMusic.play();
 
                     }
                 }
