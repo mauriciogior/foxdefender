@@ -56,8 +56,8 @@ window.onload = function() {
     botaoIniciar.font = "50px sans-serif";
     botaoIniciar.text = "START<br>GAME";
 
-    botaoIniciar.y = (150/contextHeight) * windowHeight;
     botaoIniciar.x = (15/contextWidth) * windowWidth;
+    botaoIniciar.y = (150/contextHeight) * windowHeight;
     telaInicial.addChild(botaoIniciar);
 
     // Cena principal
@@ -87,8 +87,8 @@ window.onload = function() {
             var botaoVida = new Label("Vida: "+vida);
 
 
-            botaoVida.y = (10/contextHeight) * windowHeight;
             botaoVida.x = (10/contextWidth) * windowWidth;
+            botaoVida.y = (10/contextHeight) * windowHeight;
             jogo.addChild(botaoVida);
 
             core.pushScene(pauseControlScene);
