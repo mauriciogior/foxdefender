@@ -31,6 +31,32 @@ window.onload = function() {
     //Carrega os sprites aqui!
     core.preload(bolas[0],bolas[1],bolas[2],botaoSprite[0],botaoSprite[1],botaoSprite[2],foxSprite);
 
+
+    /*****************
+     * Cenas básicas *
+     *****************/
+    // Cena do controle de pausa
+    var pauseControlScene = new Scene();
+    var pauseButton = new Label();
+    pauseButton.font = "30px sans-serif";
+    pauseButton.text = "‖";
+    pauseControlScene.addChild(pauseButton);
+
+
+    var telaInicial = new Scene();
+
+    var botaoIniciar = new Label();
+    botaoIniciar.textAlign = "center";
+    botaoIniciar.font = "50px sans-serif";
+    botaoIniciar.text = "START<br>GAME";
+
+    botaoIniciar.y = (150/contextHeight) * windowHeight;
+    botaoIniciar.x = (15/contextWidth) * windowWidth;
+    telaInicial.addChild(botaoIniciar);
+
+    // Cena principal
+    var jogo = new Scene();
+
     //Quando carregar as imagens, faça isso:
     core.onload = function(){
 
@@ -40,13 +66,9 @@ window.onload = function() {
         var pause = false;
         // an example of adding a Node object
 
-        var botaoIniciar = new Label("START<br>GAME");
-        botaoIniciar.textAlign = "center";
-
-        botaoIniciar.y = 100;
-        botaoIniciar.x = 50;
-        telaInicial.addChild(botaoIniciar);
         core.pushScene(telaInicial);
+
+
  /*
         core.addEventListener('enterframe', function() {
 
