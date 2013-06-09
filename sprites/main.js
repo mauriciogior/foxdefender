@@ -51,10 +51,11 @@ window.onload = function() {
 
     //DIREÇÃO DO PROJÉTIL
     var projectileDir = 0;
-    var projectilePos = 55;
+    var projectilePos = 54;
 
     //ESTADOS DO PROJÉTIL
     var projectileState = 0; //0: standby -  1: movimento
+    var projectileTarget = 0;
 
     //FPS REAL
     var currentTime = 0;
@@ -316,22 +317,39 @@ window.onload = function() {
                         //CALCULA O ÂNGULO DE INCLINAÇÃO DO PROJÉTIL
                         projectileDir = 180-((aim)*57);
 
-                        //AJUSTA A POSIÇÃO DO PROJÉTIL
-                        projectile.moveTo(   windowWidth/2     - ((Math.cos((projectileDir/57)))*55)-(projectileWidth/2), (windowHeight-80)-(Math.sin((projectileDir/180)*3.14)*55) - (projectileHeight/2));
+                        if(projectileState == 0 ) {
+                            //AJUSTA A POSIÇÃO DO PROJÉTIL
+                            projectile.moveTo(   windowWidth/2     - ((Math.cos((projectileDir/57)))*55)-(projectileWidth/2), (windowHeight-80)-(Math.sin((projectileDir/180)*3.14)*55) - (projectileHeight/2));
+
+                        }
+
+                        lastAim = aim;
 
                         //SE O PROJÉTIL ESTIVER MOVENDO
                         if(projectileState == 1) {
 
-                            if( enemies[currentEnemy][0].y < 0 ){
+                            if( enemies[projectileTarget][0].y < 0 ){
                                 //CORREÇÂO DE BUG, TIRO PERDIDO
                                 projectileState = 2;
                             } else {
 
                                 //AVANÇA
                                 projectilePos+=5;
+                                //POSIÇÃO DO INIMIGO (CENTRO)
+                                dx = (enemies[projectileTarget][0].x+(enemyWidth/2))-(windowWidth/2);
+                                dy = (enemies[projectileTarget][0].y+(enemyHeight/2))-(windowHeight-(foxHeight/2)-50);
+
+                                //CALCULA A DISTÂNCIA ENTRE O INIMIGO E A RAPOSA
+                                hip = Math.sqrt((dx*dx)+(dy*dy));
+
+                                //CALCULA O ÂNGULO DE INCLINAÇÃO
+                                aim = Math.acos((((enemies[projectileTarget][0].x+(enemyWidth/2))-windowWidth/2))/hip);
+
+                                //CALCULA O ÂNGULO DE INCLINAÇÃO DO PROJÉTIL
+                                projectileDir = 180-((aim)*57);
     
                                 //SETA A POSIÇÃO
-                                projectile.moveTo(windowWidth/2-((Math.cos((projectileDir/57)))*projectilePos)-10, (windowHeight-110)-(Math.sin((projectileDir/180)*3.14)*projectilePos)+25);
+                                projectile.moveTo(windowWidth/2-((Math.cos((projectileDir/57)))*projectilePos)-(projectileWidth/2), (windowHeight-80)-(Math.sin((projectileDir/180)*3.14)*projectilePos)-(projectileHeight/2));
                             }
                         }
 
@@ -354,9 +372,6 @@ window.onload = function() {
                         //SE PASSAR DO monstersSize, VOLTA NO 0
                         if(currentEnemy >= monstersSize)
                             currentEnemy = 0;
-
-                        //A MIRA ANTIGA RECEBE A ATUAL
-                        lastAim = aim;
 
                         //INIMIGOS MOVEM
                         for(var i=0 ; i<monstersSize ; i++) {
@@ -407,6 +422,7 @@ window.onload = function() {
 
                         //PROJÉTIL ENTRA EM MOVIMENTO
                         projectileState = 1;
+                            projectileTarget = currentEnemy;
 
                     }
                 }
