@@ -10,6 +10,10 @@ window.onload = function() {
     var monstersSize = 60;
     var core = new Game(windowWidth, windowHeight);
 
+    //SONS
+    var gameMusic = document.createElement('audio');
+    gameMusic.setAttribute('src', 'sounds/FoxDefender.mp3');
+
     var buttonHeight = 44;
     var buttonWidth = 42;
 
@@ -89,7 +93,6 @@ window.onload = function() {
     //LABELS DEFINITION
     pauseButton.font = "30px sans-serif";
     pauseButton.text = "||";
-    pauseButton.addEventListener('touchstart', function() { pause = !pause; });
     pauseButton.y = (10/contextHeight) * windowHeight;
     pauseButton.x = (280/contextWidth) * windowWidth;
 
@@ -147,6 +150,13 @@ window.onload = function() {
 
             //REMOVE CHILD
             gameScene.removeChild(beginButton);
+
+            //COMEÇA A MUSICA
+            gameMusic.play();
+            gameMusic.addEventListener('ended', function() {
+                this.currentTime = 0;
+                this.play();
+            }, false);
 
             //ADD CHILD
             gameScene.addChild(lifeBar);
@@ -268,9 +278,9 @@ window.onload = function() {
 
             //LOOP DO JOGO
             gameScene.addEventListener('enterframe', function() {
-
+                
                 //SE NÃO TIVER PAUSADO
-                if(!pause) {
+                if(pause == false) {
 
                     //SE ACABOU A VIDA
                     if(life <= 0) {
@@ -391,6 +401,9 @@ window.onload = function() {
                     //ATUALIZA O TEMPO
                     lastTime = currentTime;
                 }
+                else {
+                    lastTime = 0;
+                }
 
             });
 
@@ -398,7 +411,7 @@ window.onload = function() {
             var controls = function(e) {
 
                 //SE O JOGO NÃO ESTIVER PAUSADO
-                if(!pause) {
+                if(pause == false) {
 
                     //RECEBE A COR DO INIMIGO ATUAL
                     color = enemies[currentEnemy][1];
@@ -420,6 +433,17 @@ window.onload = function() {
                 button[i].addEventListener('touchmove', controls );
                 button[i].addEventListener('touchstart', controls );
             }
+
+            pauseButton.addEventListener('touchstart', function() {
+                if(pause == true) {
+                    pause = false;
+                    gameMusic.play();
+                }
+                else {
+                    pause = true;
+                    gameMusic.pause();
+                }
+            })
 
 
         });
