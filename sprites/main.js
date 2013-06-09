@@ -1,24 +1,23 @@
 enchant();
 
 window.onload = function() {
-    
+
     //VARIÁVEIS DO CANVAS
-    var contextWidth = 320;
-    var contextHeight = 480;
-    var windowWidth = 320;
-    var windowHeight = 480;
-    var monstersHeight = 60;
+    var contextWidth = 320; //Fixo: base para calculo de responsive design
+    var contextHeight = 480; //Fixo: base para calculo de responsive design
+    var windowWidth = 320; //TODO: pegar do device
+    var windowHeight = 480; //TODO: pegar do device
+    var monstersSize = 60;
     var core = new Game(windowWidth, windowHeight);
 
     var buttonHeight = 60;
     var buttonWidth = 60;
 
     //VARIÁVEIS DAS CENAS
-    var pauseControlScene = new Scene();
     var startScreenScene = new Scene();
     var gameScene = new Scene();
     var pause = false;
-    
+
     //VARIÁVEIS DA MIRA
     var hip = 0;
     var aim = 0;
@@ -31,7 +30,7 @@ window.onload = function() {
     var color = 0;
 
     //VARIÁVEIS DOS SPRITES
-    var enemie = new Array(monstersHeight);
+    var enemie = new Array(monstersSize);
     var button = new Array(3);
     var dx,dy;
     var random;
@@ -49,7 +48,7 @@ window.onload = function() {
     var steps = 0;
 
     //INIMIGO ATUAL
-    var currentEnemie = 0;
+    var currentEnemy = 0;
 
     //IMAGENS AQUI
     var foxSprite = 'cannon.png';
@@ -77,7 +76,10 @@ window.onload = function() {
 
     //LABELS DEFINITION
     pauseButton.font = "30px sans-serif";
-    pauseButton.text = "‖";
+    pauseButton.text = "||";
+    pauseButton.addEventListener('touchstart', function() { pause = !pause; });
+    pauseButton.y = (10/contextHeight) * windowHeight;
+    pauseButton.x = (280/contextWidth) * windowWidth;
 
     beginButton.textAlign = "center";
     beginButton.font = "50px sans-serif";
@@ -90,15 +92,12 @@ window.onload = function() {
     lifeBar.y = (10/contextHeight) * windowHeight;
     lifeBar.x = (10/contextWidth) * windowWidth;
 
-    pauseButton.y = (10/contextHeight) * windowHeight;
-    pauseButton.x = (240/contextWidth) * windowWidth;
-
     //COMEÇA O JOGO
     core.onload = function(){
 
         //FPS ESPERADO
         core.fps = 60;
-        
+
         //ADD CHILD
         startScreenScene.addChild(beginButton);
 
@@ -116,34 +115,34 @@ window.onload = function() {
             gameScene.addChild(pauseButton);
 
             //CRIA LISTA DOS INIMIGOS
-            for(var i=0 ; i<monstersHeight ; i++) {
+            for(var i=0 ; i<monstersSize ; i++) {
 
                 //ARRAY DE INIMIGOS
-                enemie[i] = new Array(2);
+                enemies[i] = new Array(2);
 
                 //COR ALEATÓRIA
                 color = (parseInt(Math.random()*10))%3;
 
                 //CRIA SPRITE DOS INIMIGOS
-                enemie[i][0] = new enchant.Sprite(50, 50);
+                enemies[i][0] = new enchant.Sprite(50, 50);
 
                 //SETA A COR DO INIMIGO
-                enemie[i][1] = color;
+                enemies[i][1] = color;
 
                 //POSIÇÃO DO INIMIGO (RANDOM)
                 random = Math.random()*(320-90);
 
                 //ADICIONA A IMAGEM DO INIMIGO
-                enemie[i][0].image = core.assets[enemiesSprite[color]];
+                enemies[i][0].image = core.assets[enemiesSprite[color]];
 
                 //MOVE O INIMIGO PARA A POSIÇÃO
-                enemie[i][0].moveTo(20 + random, 10 - i*80);
+                enemies[i][0].moveTo(20 + random, 10 - i*80);
 
                 //SETA OS FRAMES QUE SERÂO EXIBIDOS
-                enemie[i][0].frame = [6, 6, 7, 7];
+                enemies[i][0].frame = [6, 6, 7, 7];
 
                 //ADD CHILD
-                gameScene.addChild(enemie[i][0]);
+                gameScene.addChild(enemies[i][0]);
 
             }
 
@@ -206,26 +205,26 @@ window.onload = function() {
 
                     //PEGA A DATA ATUAL
                     currentTime = new Date().getTime();
-                    
+
                     //CALCULA O FRAME DO BROWSER
                     steps = (currentTime-lastTime)/16;
 
                     //SE NÃO FOR A PRIMEIRA VEZ DO LOOP
                     if(lastTime != 0) {
 
-                        //SE PASSAR DO monstersHeight, VOLTA NO 0
-                        if(currentEnemie >= monstersHeight)
+                        //SE PASSAR DO monstersSize, VOLTA NO 0
+                        if(currentEnemie >= monstersSize)
                             currentEnemie = 0;
 
                         //POSIÇÃO DO INIMIGO (CENTRO)
-                        dx = (enemie[currentEnemie][0].x+25)-(windowWidth/2);
-                        dy = (enemie[currentEnemie][0].y+25)-(windowHeight-120);
+                        dx = (enemies[currentEnemy][0].x+25)-(windowWidth/2);
+                        dy = (enemies[currentEnemy][0].y+25)-(windowHeight-120);
 
                         //CALCULA A DISTÂNCIA ENTRE O INIMIGO E A RAPOSA
                         hip = Math.sqrt((dx*dx)+(dy*dy));
 
                         //CALCULA O ÂNGULO DE INCLINAÇÃO
-                        aim = Math.acos((((enemie[currentEnemie][0].x+25)-windowWidth/2))/hip);
+                        aim = Math.acos((((enemies[currentEnemy][0].x+25)-windowWidth/2))/hip);
 
                         //ROTACIONA A RAPOSA DE ACORDO COM O ÂNGULO ACIMA
                         fox.rotate((lastAim-aim)*57);
@@ -247,41 +246,41 @@ window.onload = function() {
                         }
 
                         //SE O PROJÉTIL INTERCEPTAR E ESTIVER EM MOVIMENTO
-                        if(enemie[currentEnemie][0].intersect(projectile) && projectileState == 1){
+                        if(enemies[currentEnemy][0].intersect(projectile) && projectileState == 1){
 
                             //STANDBY DO PROJÉTIL
-                            projectileState = 0; 
+                            projectileState = 0;
 
                             //INIMIGO MORRE E VOLTA PARA CIMA
-                            enemie[currentEnemie][0].y -= 4800;
+                            enemies[currentEnemy][0].y -= 4800;
 
                             //PRÓXIMO INIMIGO
-                            currentEnemie ++;
+                            currentEnemy ++;
 
                             //VOLTA PRA POSIÇÃO INICIAL O PROJÉTIL
                             projectilePos = 55;
                         }
 
-                        //SE PASSAR DO monstersHeight, VOLTA NO 0
-                        if(currentEnemie >= monstersHeight)
+                        //SE PASSAR DO monstersSize, VOLTA NO 0
+                        if(currentEnemie >= monstersSize)
                             currentEnemie = 0;
 
                         //A MIRA ANTIGA RECEBE A ATUAL
                         lastAim = aim;
 
                         //INIMIGOS MOVEM
-                        for(var i=0 ; i<monstersHeight ; i++) {
+                        for(var i=0 ; i<monstersSize ; i++) {
                             enemie[i][0].y += steps*2;
                         }
 
                         //SE O INIMÍGO PASSAR DA RAPOSA
-                        if(enemie[currentEnemie][0].y > 325) {
+                        if(enemies[currentEnemy][0].y > 325) {
 
                             //ELE VOLTA PRA CIMA
-                            enemie[currentEnemie][0].y -= 4800;
+                            enemies[currentEnemy][0].y -= 4800;
 
                             //PRÓXIMO INIMIGO
-                            currentEnemie ++;
+                            currentEnemy ++;
 
                             //PERDE VIDA
                             life -= 5;
@@ -290,10 +289,9 @@ window.onload = function() {
                             lifeBar.text = "LIFE: "+life;
                         }
 
-                        //SE PASSAR DO monstersHeight, VOLTA NO 0
-                        if(currentEnemie == monstersHeight)
+                        //SE PASSAR DO monstersSize, VOLTA NO 0
+                        if(currentEnemie == monstersSize)
                             currentEnemie = 0;
-
                     }
                     //ATUALIZA O TEMPO
                     lastTime = currentTime;
@@ -308,10 +306,10 @@ window.onload = function() {
                 if(!pause) {
 
                     //RECEBE A COR DO INIMIGO ATUAL
-                    color = enemie[currentEnemie][1];
+                    color = enemies[currentEnemy][1];
 
                     //SE APERTAR O BOTÃO CERTO
-                    if(e.x >= button[color].x && e.x <= button[color].x+80 
+                    if(e.x >= button[color].x && e.x <= button[color].x+80
                         && e.y >= button[color].y && e.y <= button[color].y+80){
 
                         //PROJÉTIL ENTRA EM MOVIMENTO
@@ -326,14 +324,7 @@ window.onload = function() {
                 button[i].addEventListener('touchmove', controls );
                 button[i].addEventListener('touchstart', controls );
             }
-            
-            //CLIQUE DO BOTÃO PAUSE
-            pauseButton.addEventListener('touchstart', function() {
-                if(pause)
-                    pause = false;
-                else
-                    pause = true;
-            });
+
 
         });
     };
