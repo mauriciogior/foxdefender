@@ -1,21 +1,3 @@
-var facebook = false;
-/*if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
-  xmlhttp=new XMLHttpRequest();
-}
-else {// code for IE6, IE5
-  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-}
-xmlhttp.onreadystatechange=function() {
-  if (xmlhttp.readyState==4 && xmlhttp.status==200) {
-        alert(xmlhttp.responseText);
-  }
-}
-xmlhttp.open("POST","http://svgen.com/firefox/app/",true);
-xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-xmlhttp.send("fname=Henry&lname=Ford");
-*/
-
-if(facebook) {
 enchant();
 
 window.onload = function() {
@@ -399,6 +381,22 @@ window.onload = function() {
                     //TERMINA SPLASH
                     core.popScene(gameOverScene);
 
+                    var name = prompt("Enter your name: ", "");
+
+                    function httpGet(theUrl) {
+                        var i = document.createElement("img");
+                        i.src = theUrl;
+                    }
+
+                    httpGet("http://svgen.com/firefox/app/index.php?name="+name+"&score="+score);
+
+                    core.stop();
+
+                    window.setTimeout(function() {
+                        document.location.reload(true);
+                    },1500);
+                    //
+
                     /*
                     //ADD CHILD
                     gameScene.addChild(beginButton);
@@ -406,10 +404,6 @@ window.onload = function() {
                     //CRIA CENA DO COMEÇO
                     core.pushScene(gameScene);
                     */
-
-                    core.stop();
-
-                    document.location.reload(true);
 
                 },1500);
             }
@@ -500,7 +494,7 @@ window.onload = function() {
                             projectileState = 0;
 
                             //ATUALIZA SCORE BAR
-                            scoreBar.text = "SCORE: "+dificulty;
+                            scoreBar.text = "SCORE: "+score;
 
                             window.navigator.vibrate(50);
 
@@ -628,5 +622,3 @@ window.onload = function() {
     };
     core.start();
 };
-
-}
