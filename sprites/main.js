@@ -28,6 +28,8 @@ window.onload = function() {
     var enemyWidth = 50;
     var enemyHeight = 50;
 
+var deathCycle = 0;
+
     var soundButtonHeight = 30;
     var soundButtonWidth = 30;
 
@@ -128,7 +130,7 @@ window.onload = function() {
     var pausescreenSprite = 'pausescreen.png';
     var lifePointSprite = 'lifebar.png';
 
-    var deathGradientSprite = 'deathgradient.png';
+    var deathGradientSprite = 'death-gradient.png';
 
     core.preload(
             enemiesSprite,
@@ -412,6 +414,7 @@ window.onload = function() {
                 //SE NÃO TIVER PAUSADO
                 if(pause == false) {
 
+
                     //SE ACABOU A VIDA
                     if(life <= 0) {
                         gameOver();
@@ -424,6 +427,12 @@ window.onload = function() {
                     //CALCULA O FRAME DO BROWSER
                     steps = (currentTime-lastTime)/16;
 
+                    if(deathCycle != 0 ){
+                        if( deathCycle - steps <= 0 ){
+                            deathCycle = 0;
+                            gameScene.removeChild(deathGradient);
+                        } else deathCycle -= steps;
+                    }
                     //SE NÃO FOR A PRIMEIRA VEZ DO LOOP
                     if(lastTime != 0) {
 
@@ -526,6 +535,8 @@ window.onload = function() {
                             //PERDE VIDA
                             life -= 5;
 
+                            gameScene.addChild(deathGradient);
+                            deathCycle = 10
 
                             projectile.image = core.assets[colorSmallSprite[enemies[currentEnemy][1]]];
                         }
