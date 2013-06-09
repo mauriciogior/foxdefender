@@ -3,10 +3,10 @@ enchant();
 window.onload = function() {
 
     //VARIÁVEIS DO CANVAS
-    var contextWidth = 320;
-    var contextHeight = 480;
-    var windowWidth = 320;
-    var windowHeight = 480;
+    var contextWidth = 320; //Fixo: base para calculo de responsive design
+    var contextHeight = 480; //Fixo: base para calculo de responsive design
+    var windowWidth = 320; //TODO: pegar do device
+    var windowHeight = 480; //TODO: pegar do device
     var core = new Game(windowWidth, windowHeight);
 
     //VARIÁVEIS DAS CENAS
