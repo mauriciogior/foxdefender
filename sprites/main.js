@@ -31,6 +31,7 @@ window.onload = function() {
     var soundButtonHeight = 30;
     var soundButtonWidth = 30;
     var soundButtonRightMargin = 10;
+    var soundButtonTopMargin = 10;
 
     var muteButtonWidth = soundButtonWidth;
     var muteButtonHeight = soundButtonHeight;
@@ -38,6 +39,7 @@ window.onload = function() {
     var pauseButtonWidth = 30;
     var pauseButtonHeight = 30;
     var pauseButtonRightMargin = 15;
+    var pauseButtonTopMargin = soundButtonTopMargin;
 
     var pausescreenWidth = windowWidth;
     var pausescreenHeight = windowHeight;
@@ -217,7 +219,7 @@ window.onload = function() {
             var soundButton = new enchant.Sprite(soundButtonWidth, soundButtonHeight);
                 soundButton.image = core.assets[soundButtonSprite];
                 soundButton.x = windowWidth - soundButtonWidth - soundButtonRightMargin;
-                soundButton.y = 0
+                soundButton.y = soundButtonTopMargin;
                 gameScene.addChild(soundButton);
 
             var muteButton = new enchant.Sprite(muteButtonWidth, muteButtonHeight);
@@ -354,7 +356,7 @@ window.onload = function() {
             var pauseButton = new enchant.Sprite(pauseButtonWidth,pauseButtonHeight);
                 pauseButton.image = core.assets[pauseButtonSprite];
                 pauseButton.x = windowWidth - pauseButtonWidth - soundButtonWidth - soundButtonRightMargin - pauseButtonRightMargin;
-                pauseButton.y = 0
+                pauseButton.y = pauseButtonTopMargin;
             gameScene.addChild(pauseButton);
 
             //FUNÇÃO GAMEOVER
