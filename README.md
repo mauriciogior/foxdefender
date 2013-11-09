@@ -1,13 +1,17 @@
-# A Blank Template for Open Web Apps
+# FoxDefender
 
-*This template has been updated with a new structure as of May 2013. Other mortar templates will be updated soon too.*
+Este aplicativo foi desenvolvido durante um Hackathon, promovido pelas empresas Mozilla, Telefonica/Vivo e Qualcomm.
 
-The is a minimal template that has a little HTML, CSS, and js to help
-you start writing an Open Web App.
+Durante 24 horas os desenvolvedores Christian Carrizo, Douglas Drumond, Marcio Martins, Maurício Giordano, Paloma Leslie e Raphael Ferras contruiram um jogo inteiramente do zero para a plaforma Firefox OS utilizando o framework enchant.js.
 
-This is part of the [mortar](https://github.com/mozilla/mortar/)
-template collection for building Open Web Apps.
+Todo o trabalho encontra-se neste repositório, na pasta sprites.
 
-# Usage
+link para jogar/download:
+http://198.199.91.102/foxdefender/sprites/
+[http://198.199.91.102/foxdefender/sprites/](http://198.199.91.102/foxdefender/sprites/)
 
-* git clone git://github.com/mozilla/mortar-app-stub.git myapp
+este jogo possui um rank online que encontra-se em:
+[http://svgen.com/firefox/app/](http://svgen.com/firefox/app/)
+
+e também consta disponível no site de aplicativos da Firefox.
+
